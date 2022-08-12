@@ -1,7 +1,7 @@
 {
   "type": "File",
   "start": 0,
-  "end": 18523,
+  "end": 18549,
   "loc": {
     "start": {
       "line": 1,
@@ -9,16 +9,16 @@
       "index": 0
     },
     "end": {
-      "line": 579,
-      "column": 68,
-      "index": 18523
+      "line": 581,
+      "column": 24,
+      "index": 18549
     }
   },
   "errors": [],
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 18523,
+    "end": 18549,
     "loc": {
       "start": {
         "line": 1,
@@ -26,9 +26,9 @@
         "index": 0
       },
       "end": {
-        "line": 579,
-        "column": 68,
-        "index": 18523
+        "line": 581,
+        "column": 24,
+        "index": 18549
       }
     },
     "sourceType": "module",
@@ -30692,6 +30692,45 @@
             }
           }
         ]
+      },
+      {
+        "type": "Identifier",
+        "start": 18525,
+        "end": 18549,
+        "loc": {
+          "start": {
+            "line": 581,
+            "column": 0,
+            "index": 18525
+          },
+          "end": {
+            "line": 581,
+            "column": 24,
+            "index": 18549
+          }
+        },
+        "declaration": {
+          "type": "Identifier",
+          "start": 18540,
+          "end": 18549,
+          "loc": {
+            "start": {
+              "line": 581,
+              "column": 15,
+              "index": 18540
+            },
+            "end": {
+              "line": 581,
+              "column": 24,
+              "index": 18549
+            },
+            "identifierName": "Timestamp"
+          },
+          "name": "Timestamp"
+        },
+        "name": "_",
+        "leadingComments": [],
+        "trailingComments": []
       }
     ],
     "directives": []

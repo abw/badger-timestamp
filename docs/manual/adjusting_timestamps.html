@@ -1,0 +1,168 @@
+<!DOCTYPE html><html><head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Manual | Badger Timestamp</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<link rel="stylesheet" href="./inject/css/0-badger.css"><meta name="description" content="Simple timestamp utility"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="Badger Timestamp"><meta property="twitter:description" content="Simple timestamp utility"></head>
+<body class="layout-container manual-root" data-ice="rootContainer">
+
+<header>
+  <a href="./" style="display: flex; align-items: center;"><img src="./image/brand_logo.svg" style="width:34px;"></a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/abw/badger-timestamp"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/getting_started.html"><a href="manual/getting_started.html" data-ice="link">Getting Started</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/getting_started.html"><a href="manual/getting_started.html#installation" data-ice="link">Installation</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/getting_started.html"><a href="manual/getting_started.html#npm" data-ice="link">npm</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/getting_started.html"><a href="manual/getting_started.html#pnpm" data-ice="link">pnpm</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/getting_started.html"><a href="manual/getting_started.html#yarn" data-ice="link">yarn</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/getting_started.html"><a href="manual/getting_started.html#basic-use" data-ice="link">Basic Use</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html" data-ice="link">Creating Timestamps</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#valid-formats" data-ice="link">Valid Formats</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#now-is-the-time" data-ice="link">Now is the Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#copy-constructor" data-ice="link">Copy Constructor</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#date-constructor" data-ice="link">Date Constructor</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#javascript-epoch-time" data-ice="link">Javascript Epoch Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#unix-epoch-time" data-ice="link">Unix Epoch Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#component-object" data-ice="link">Component Object</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#configuration-options" data-ice="link">Configuration Options</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html" data-ice="link">Formatting Timestamps</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#generating-a-timestamp" data-ice="link">Generating a Timestamp</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-the-date" data-ice="link">Formatting the Date</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-the-time" data-ice="link">Formatting the Time</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/adjusting_timestamps.html"><a href="manual/adjusting_timestamps.html" data-ice="link">Adjusting Timestamps</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/adjusting_timestamps.html"><a href="manual/adjusting_timestamps.html#adjusting-the-date-and-time" data-ice="link">Adjusting the Date and Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/adjusting_timestamps.html"><a href="manual/adjusting_timestamps.html#adjustment-string" data-ice="link">Adjustment String</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/comparing_timestamps.html"><a href="manual/comparing_timestamps.html" data-ice="link">Comparing Timestamps</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/comparing_timestamps.html"><a href="manual/comparing_timestamps.html#the-compare---method" data-ice="link">The compare() Method</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/comparing_timestamps.html"><a href="manual/comparing_timestamps.html#equality" data-ice="link">Equality</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/comparing_timestamps.html"><a href="manual/comparing_timestamps.html#before-and-after" data-ice="link">Before and After</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html" data-ice="link">Utility Functions</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#assertion-functions" data-ice="link">Assertion Functions</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#istimestamp-ts-" data-ice="link">isTimestamp(ts)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#isdate-date-" data-ice="link">isDate(date)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#parsing-functions" data-ice="link">Parsing Functions</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#splittimestamp-string-" data-ice="link">splitTimestamp(string)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#unpackdate-date-" data-ice="link">unpackDate(date)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#unpacknow--" data-ice="link">unpackNow()</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#parsedate-string-" data-ice="link">parseDate(string)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#parseduration-string-" data-ice="link">parseDuration(string)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#singulardurations-durations-" data-ice="link">singularDurations(durations)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#formatting-functions" data-ice="link">Formatting Functions</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#joindate-timestamp--joint-" data-ice="link">joinDate(timestamp, joint)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#jointime-timestamp--joint-" data-ice="link">joinTime(timestamp, joint)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#jointimestamp-timestamp--config-" data-ice="link">joinTimestamp(timestamp, config)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#miscellaneous-functions" data-ice="link">Miscellaneous Functions</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#daysinmonth-month--year-" data-ice="link">daysInMonth(month, year)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#leapyear-year-" data-ice="link">leapYear(year)</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="adjusting-timestamps">Adjusting Timestamps</h1><ul>
+<li><a href="#adjusting-the-date-and-time">Adjusting the Date and Time</a></li>
+<li><a href="#adjustment-string">Adjustment String</a></li>
+</ul>
+<h2 id="adjusting-the-date-and-time">Adjusting the Date and Time</h2><p>Use the <code>adjust()</code> method to adjust the date and/or time.
+Pass an object containing adjustments to be made to one or
+more of the date or time components.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2022-09-08 07:06:05');
+ts.adjust({ year: 1 });  // 2023-09-08 07:06:05</code></code></pre>
+<p>Note that this method mutates the object.  Use the <code>copy()</code>
+method first if you want to keep the original unmodified.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts1 = timestamp('2022-09-08 07:06:05');
+const ts2 = ts1.copy().adjust({ year: 1 });  // 2023-09-08 07:06:05</code></code></pre>
+<p>You can specify any of the date or time components in either singular
+or plural form.  The values can be positive or negative.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">// singular names are OK
+ts.adjust({
+    year: 1, month: 2, day: 3, hour: 4, minute: 5, second: 6
+});
+// plural names are OK
+ts.adjust({
+    years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6
+});
+// negative values are  OK
+ts.adjust({
+    years: -5, months: -24, days: -100, hours: -200, minutes: -300, seconds: -600
+});</code></code></pre>
+<p>The method will correctly handle wrap-arounds, e.g. adding 100 days to the current
+date will return the correct date 100 days from now.  The module only supports the
+Gregorian calendar and will not work correctly for dates before September 1752 when
+the calendar was introduced and
+<a href="https://www.historic-uk.com/HistoryUK/HistoryofBritain/Give-us-our-eleven-days/">11 days were 'lost'</a>.</p>
+<h2 id="adjustment-string">Adjustment String</h2><p>You can also pass a string to the <code>adjust()</code> method.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">ts.adjust("5 years");</code></code></pre>
+<p>As above, the units can be singular (e.g. <code>year</code>) or plural (e.g. <code>years</code>) and the
+values can be positive or negative.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">ts.adjust("1 year");
+ts.adjust("5 years");
+ts.adjust("-5 years");</code></code></pre>
+<p>You can specify multiple items.  They can be separated by whitespace or any other non-word
+characters.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">ts.adjust("1 year 2 months 3 days");
+ts.adjust("1 year, 2 months, 3 days");
+ts.adjust("1 year|2 months|3 days");</code></code></pre>
+<p>The pattern matching algorithm looks for a sequence of digits (with an optional leading
+negative sign) and then a word.  Anything else will be ignored.</p>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+
+
+</body></html>

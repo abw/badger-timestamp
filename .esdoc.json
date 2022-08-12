@@ -12,6 +12,17 @@
         "brand": {
           "title": "Badger Timestamp",
           "logo": "./docs/images/badger2.svg"
+        },
+        "manual": {
+          "index": "./manual/index.md",
+          "files": [
+            "./manual/getting_started.md",
+            "./manual/creating_timestamps.md",
+            "./manual/formatting_timestamps.md",
+            "./manual/adjusting_timestamps.md",
+            "./manual/comparing_timestamps.md",
+            "./manual/utility_functions.md"
+          ]
         }
       }
     },

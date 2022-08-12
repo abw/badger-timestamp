@@ -1,5 +1,5 @@
 import test from 'ava';
-import { joinDate, joinTime, joinTimestamp } from '../src/Timestamp.js'
+import { joinDate, joinTime, joinTimestamp, timestamp } from '../src/Timestamp.js'
 
 //-----------------------------------------------------------------------------
 // date
@@ -67,4 +67,22 @@ test(
     const stamp = joinTimestamp({ year: 2022, month: 8, day: 9, hours: 1, minutes: 2, seconds: 3 }, { joint: 'T' });
     t.is( stamp, '2022-08-09T01:02:03' );
   }
+);
+
+//-----------------------------------------------------------------------------
+// stamp() method
+//-----------------------------------------------------------------------------
+test(
+  'timestamp with configuration options',
+  t => t.is(
+    timestamp('2022-08-09 01:02:03', { joint: 'T', dateJoint: '/', timeJoint: '::' }).stamp(),
+    '2022/08/09T01::02::03',
+  )
+);
+test(
+  'timestamp stamp() with configuration options',
+  t => t.is(
+    timestamp('2022-08-09 01:02:03').stamp({ joint: 'T', dateJoint: '/', timeJoint: '::' }),
+    '2022/08/09T01::02::03',
+  )
 );

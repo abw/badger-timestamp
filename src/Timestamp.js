@@ -577,3 +577,5 @@ export const leapYear = year => {
  * @return {Object} - a `Timestamp` object
  */
 export const timestamp = (ts, options) => new Timestamp(ts, options)
+
+export default Timestamp

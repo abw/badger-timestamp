@@ -3,13 +3,13 @@
   "version": "1.0.1",
   "description": "Simple timestamp utility",
   "type": "module",
-  "main": "dist/badger-timestamp.cjs.js",
-  "module": "dist/badger-timestamp.esm.js",
+  "main": "dist/badger-timestamp.cjs",
+  "module": "dist/badger-timestamp.mjs",
   "browser": "dist/badger-timestamp.umd.js",
   "exports": {
     ".": {
-      "require": "./dist/badger-timestamp.cjs.js",
-      "import": "./dist/badger-timestamp.esm.js"
+      "require": "./dist/badger-timestamp.cjs",
+      "import": "./dist/badger-timestamp.mjs"
     }
   },
   "author": "Andy Wardley",

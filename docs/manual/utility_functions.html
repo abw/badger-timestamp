@@ -1,0 +1,151 @@
+<!DOCTYPE html><html><head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Manual | Badger Timestamp</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<link rel="stylesheet" href="./inject/css/0-badger.css"><meta name="description" content="Simple timestamp utility"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="Badger Timestamp"><meta property="twitter:description" content="Simple timestamp utility"></head>
+<body class="layout-container manual-root" data-ice="rootContainer">
+
+<header>
+  <a href="./" style="display: flex; align-items: center;"><img src="./image/brand_logo.svg" style="width:34px;"></a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/abw/badger-timestamp"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/getting_started.html"><a href="manual/getting_started.html" data-ice="link">Getting Started</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/getting_started.html"><a href="manual/getting_started.html#installation" data-ice="link">Installation</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/getting_started.html"><a href="manual/getting_started.html#npm" data-ice="link">npm</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/getting_started.html"><a href="manual/getting_started.html#pnpm" data-ice="link">pnpm</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/getting_started.html"><a href="manual/getting_started.html#yarn" data-ice="link">yarn</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/getting_started.html"><a href="manual/getting_started.html#basic-use" data-ice="link">Basic Use</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html" data-ice="link">Creating Timestamps</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#valid-formats" data-ice="link">Valid Formats</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#now-is-the-time" data-ice="link">Now is the Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#copy-constructor" data-ice="link">Copy Constructor</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#date-constructor" data-ice="link">Date Constructor</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#javascript-epoch-time" data-ice="link">Javascript Epoch Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#unix-epoch-time" data-ice="link">Unix Epoch Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#component-object" data-ice="link">Component Object</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#configuration-options" data-ice="link">Configuration Options</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html" data-ice="link">Formatting Timestamps</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#generating-a-timestamp" data-ice="link">Generating a Timestamp</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-the-date" data-ice="link">Formatting the Date</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-the-time" data-ice="link">Formatting the Time</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/adjusting_timestamps.html"><a href="manual/adjusting_timestamps.html" data-ice="link">Adjusting Timestamps</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/adjusting_timestamps.html"><a href="manual/adjusting_timestamps.html#adjusting-the-date-and-time" data-ice="link">Adjusting the Date and Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/adjusting_timestamps.html"><a href="manual/adjusting_timestamps.html#adjustment-string" data-ice="link">Adjustment String</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/comparing_timestamps.html"><a href="manual/comparing_timestamps.html" data-ice="link">Comparing Timestamps</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/comparing_timestamps.html"><a href="manual/comparing_timestamps.html#the-compare---method" data-ice="link">The compare() Method</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/comparing_timestamps.html"><a href="manual/comparing_timestamps.html#equality" data-ice="link">Equality</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/comparing_timestamps.html"><a href="manual/comparing_timestamps.html#before-and-after" data-ice="link">Before and After</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html" data-ice="link">Utility Functions</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#assertion-functions" data-ice="link">Assertion Functions</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#istimestamp-ts-" data-ice="link">isTimestamp(ts)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#isdate-date-" data-ice="link">isDate(date)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#parsing-functions" data-ice="link">Parsing Functions</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#splittimestamp-string-" data-ice="link">splitTimestamp(string)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#unpackdate-date-" data-ice="link">unpackDate(date)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#unpacknow--" data-ice="link">unpackNow()</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#parsedate-string-" data-ice="link">parseDate(string)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#parseduration-string-" data-ice="link">parseDuration(string)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#singulardurations-durations-" data-ice="link">singularDurations(durations)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#formatting-functions" data-ice="link">Formatting Functions</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#joindate-timestamp--joint-" data-ice="link">joinDate(timestamp, joint)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#jointime-timestamp--joint-" data-ice="link">joinTime(timestamp, joint)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#jointimestamp-timestamp--config-" data-ice="link">joinTimestamp(timestamp, config)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#miscellaneous-functions" data-ice="link">Miscellaneous Functions</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#daysinmonth-month--year-" data-ice="link">daysInMonth(month, year)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/utility_functions.html"><a href="manual/utility_functions.html#leapyear-year-" data-ice="link">leapYear(year)</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="utility-functions">Utility Functions</h1><ul>
+<li><a href="#assertion-functions">Assertion Function</a></li>
+<li><a href="#parsing-functions">Parsing Function</a></li>
+<li><a href="#formatting-functions">Formatting Function</a></li>
+<li><a href="#miscellaneous-functions">Miscellaneous Function</a></li>
+</ul>
+<h2 id="assertion-functions">Assertion Functions</h2><h3 id="istimestamp-ts-">isTimestamp(ts)</h3><p>Function to determine if a string matches a timestamp format.</p>
+<h3 id="isdate-date-">isDate(date)</h3><p>Function to determine if a variable is a <code>Date</code> object.</p>
+<h2 id="parsing-functions">Parsing Functions</h2><h3 id="splittimestamp-string-">splitTimestamp(string)</h3><p>Parses a timestamp string and return an object containing the component parts:
+<code>year</code>, <code>month</code>, <code>day</code>, <code>hours</code>, <code>minutes</code> and <code>seconds</code>.</p>
+<h3 id="unpackdate-date-">unpackDate(date)</h3><p>Unpacks the items from a <code>Date</code> object and returns an object containing the
+component parts: <code>year</code>, <code>month</code>, <code>day</code>, <code>hours</code>, <code>minutes</code> and <code>seconds</code>.</p>
+<h3 id="unpacknow--">unpackNow()</h3><p>Creates a <code>Date</code> object for the current time then calls <code>unpackDate()</code> to
+unpack it into constituent parts.</p>
+<h3 id="parsedate-string-">parseDate(string)</h3><p>Passes a string the <code>Date.parse()</code> constructor and then calls <code>unpackDate()</code>
+to unpack it into constituent parts.</p>
+<h3 id="parseduration-string-">parseDuration(string)</h3><p>Parses a duration string (e.g. <code>1 year 3 months</code>) and returns an object containing
+the consituent parts (e.g. <code>{ year: 1, month: 3 }</code>).  Note that this always returns
+components in singular form (e.g. <code>year</code> and <code>month</code>) regardless of how they were
+specified in the string.</p>
+<h3 id="singulardurations-durations-">singularDurations(durations)</h3><p>Function to convert an object containing any plural duration units (e.g. <code>hours</code>) to
+the singular counterpart (e.g. <code>hour</code>).</p>
+<h2 id="formatting-functions">Formatting Functions</h2><h3 id="joindate-timestamp--joint-">joinDate(timestamp, joint)</h3><p>Function to join the constituent parts of a date.</p>
+<h3 id="jointime-timestamp--joint-">joinTime(timestamp, joint)</h3><p>Function to join the constituent parts of a time.</p>
+<h3 id="jointimestamp-timestamp--config-">joinTimestamp(timestamp, config)</h3><p>Function to format a timestamp string from a <code>Timestamp</code> object.
+The <code>config</code> options can be used to override the default values
+for <code>joint</code>, <code>dateJoint</code> and/or <code>timeJoint</code>.</p>
+<h2 id="miscellaneous-functions">Miscellaneous Functions</h2><h3 id="daysinmonth-month--year-">daysInMonth(month, year)</h3><p>Return the number of days in a month.</p>
+<h3 id="leapyear-year-">leapYear(year)</h3><p>Returns a boolean value indicating if a year is a leap year.</p>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+
+
+</body></html>
