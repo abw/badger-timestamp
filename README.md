@@ -32,7 +32,7 @@ Install `badger-timestamp` using your favourite package manager.
 ## Documentation
 
 Read the [Manual](https://abw.github.io/badger-timestamp/docs/manual) for
-examples of use and the [API documentation](https://abw.github.io/badger-timestamp/docs/) for
+examples of use and the [API documentation](https://abw.github.io/badger-timestamp/docs/identifiers.html) for
 further details.
 
 ## Author
