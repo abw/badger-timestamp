@@ -1,4 +1,4 @@
-# badger
+# badger-timestamp
 
 <img src="./images/badger2.svg" width="300"/>
 
