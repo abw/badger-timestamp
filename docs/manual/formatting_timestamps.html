@@ -54,10 +54,27 @@
 <div data-ice="manual">
     <ul class="manual-toc">
       
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html" data-ice="link">Timestamp Components</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#year--" data-ice="link">year()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#month--" data-ice="link">month()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#day--" data-ice="link">day()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#hours--" data-ice="link">hours()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#minutes--" data-ice="link">minutes()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#seconds--" data-ice="link">seconds()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#dateobject--" data-ice="link">dateObject()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#epochseconds--" data-ice="link">epochSeconds()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#epochmilliseconds--" data-ice="link">epochMilliseconds()</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
     <li data-ice="manualNav" class="indent-h1" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html" data-ice="link">Formatting Timestamps</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#generating-a-timestamp" data-ice="link">Generating a Timestamp</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-the-date" data-ice="link">Formatting the Date</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-the-time" data-ice="link">Formatting the Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#weekday-name" data-ice="link">Weekday Name</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#month-name" data-ice="link">Month Name</a></li>
 </ul>
   </div>
 <div data-ice="manual">
@@ -107,6 +124,8 @@
 <li><a href="#generating-a-timestamp">Generating a Timestamp</a></li>
 <li><a href="#formatting-the-date">Formatting the Date</a></li>
 <li><a href="#formatting-the-time">Formatting the Time</a></li>
+<li><a href="#weekday-name">Weekday Name</a></li>
+<li><a href="#month-name">Month Name</a></li>
 </ul>
 <h2 id="generating-a-timestamp">Generating a Timestamp</h2><p>Call the <code>stamp()</code> method to regenerate the timestamp as a string.</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">const ts1 = timestamp('2022-08-12 08:16:24');
@@ -140,6 +159,30 @@ const tm = ts.time();    // 08::16::24</code></code></pre>
 <p>Or passed as an argument to the <code>time()</code> method:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2022-08-12 08:16:24');
 const tm = ts.time('::');    // 08::16::24</code></code></pre>
+<h2 id="weekday-name">Weekday Name</h2><p>The <code>weekday()</code> method returns the day of the week as an integer from 0 (Sunday)
+to 6 (Saturday).</p>
+<p>The <code>weekdayName()</code> method returns the day of the week as a string.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">timestamp('2022-08-15').weekdayName();  // Monday</code></code></pre>
+<p>An optional argument can be provided as a format.  This defaults to <code>long</code> but can
+be set to <code>short</code> for a 3 letter abbreviation of the name.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">timestamp('2022-08-15').weekdayName('short');  // Mon</code></code></pre>
+<p>The method will use the current local which defaults to <code>default</code> and will use
+the current locale for your browser or machine.  You can specify a locale as a
+configuration option for the timestamp.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2022-08-15', { locale: 'fr-FR' })
+ts.weekdayName();         // lundi
+ts.weekdayName('short');  // lun.</code></code></pre>
+<h2 id="month-name">Month Name</h2><p>The <code>monthName()</code> method returns the day of the month as a string.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">timestamp('2022-09-15').monthName();  // September</code></code></pre>
+<p>An optional argument can be provided as a format.  This defaults to <code>long</code> but can
+be set to <code>short</code> for a 3 letter abbreviation of the month.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">timestamp('2022-09-15').monthName('short');  // Sep</code></code></pre>
+<p>The method will use the current local which defaults to <code>default</code> and will use
+the current locale for your browser or machine.  You can specify a locale as a
+configuration option for the timestamp.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2022-09-15', { locale: 'fr-FR' })
+ts.monthName();         // septembre
+ts.monthName('short');  // sep</code></code></pre>
 </div>
 </div>
 

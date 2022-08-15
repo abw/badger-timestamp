@@ -567,7 +567,7 @@
     "__docId__": 48,
     "kind": "file",
     "name": "src/Timestamp.js",
-    "content": "import {\n  hasValue, isInteger, isObject, isString, noValue,\n  fail, doNothing\n} from \"@abw/badger-utils\";\n\nconst MATCH_DATE  = '(\\\\d{4})\\\\D(\\\\d{1,2})\\\\D(\\\\d{1,2})';\nconst MATCH_TIME  = '(\\\\d{1,2})\\\\D(\\\\d{2})\\\\D(\\\\d{2})';\nconst MATCH_STAMP = `^\\\\s*${MATCH_DATE}(?:(?:T|\\\\s)${MATCH_TIME})?`;\nconst STAMP_REGEX = new RegExp(MATCH_STAMP);\nconst STAMP_PARTS = [undefined, 'year', 'month', 'day', 'hours', 'minutes', 'seconds'];\nconst DURATIONS   = ['year', 'month', 'day', 'hour', 'minute', 'second'];\nconst PLURALS     = { hour: 'hours', minute: 'minutes', second: 'seconds' };\n\n/**\n * Default configuration options.\n */\nconst defaults = {\n  joint:     ' ',\n  dateJoint: '-',\n  timeJoint: ':',\n}\n\n/**\n * The Timestamp class implements an object for parsing, manipulating\n * and formatting ISO8601 timestamps.\n */\nexport class Timestamp {\n  /**\n   * Constructor for Timestamp object.\n   * @param {String|Integer|Date|Object} [ts] - timestamp\n   * @param {Object} [options] - configuration options\n   * @param {String} [options.joint=' '] - joining character between date and time parts\n   * @param {String} [options.dateJoint='-'] - joining character for date segments\n   * @param {String} [options.timeJoint=':'] - joining character for time segments\n   */\n  constructor(ts, options) {\n    const props = { ...defaults, ...options };\n    this.props = props;\n\n    this.debug = props.debug\n      ? console.log.bind(console)\n      : doNothing;\n\n    if (noValue(ts)) {\n      // use current time if no argument provided\n      this.parts = unpackNow()\n    }\n    else if (ts instanceof Timestamp) {\n      // copy constructor\n      this.parts = { ...ts.parts };\n    }\n    else if (isTimestamp(ts)) {\n      // split timestamp string\n      this.parts = splitTimestamp(ts)\n    }\n    else if (isString(ts)) {\n      // parse another date string\n      this.parts = parseDate(ts)\n    }\n    else if (isDate(ts)) {\n      // unpack a Date object\n      this.parts = unpackDate(ts)\n    }\n    else if (isInteger(ts)) {\n      // milliseconds since the epoch\n      this.parts = parseDate(ts)\n    }\n    else if (isObject(ts)) {\n      if (hasValue(ts.unix)) {\n        // seconds since unix epoch time, multiply by 1000 to get JS milliseconds\n        this.parts = parseDate(ts.unix * 1000);\n      }\n      else if (hasValue(ts.ms)) {\n        // milliseconds since unix epoch time\n        this.parts = parseDate(ts.ms);\n      }\n      else {\n        // object containing year, month, day, etc.\n        this.parts = ts\n      }\n    }\n    else {\n      fail(\"Invalid timestamp: \", ts)\n    }\n  }\n  /**\n   * Method to return a new object as a copy of the current object\n   * @return {Object} - new `Timestamp` object\n   */\n  copy() {\n    return new Timestamp(this.parts);\n  }\n  /**\n   * Method to get or set the year.\n   * @param {Integer} [year] - optional new value for year\n   * @return {Integer} - the year\n   */\n  year(year) {\n    if (hasValue(year)) {\n      this.parts.year = year;\n    }\n    return this.parts.year;\n  }\n  /**\n   * Method to get or set the month.\n   * @param {Integer} [month] - optional new value for month\n   * @return {Integer} - the month\n   */\n  month(month) {\n    if (hasValue(month)) {\n      this.parts.month = month;\n    }\n    return this.parts.month;\n  }\n  /**\n   * Method to get or set the day.\n   * @param {Integer} [day] - optional new value for day\n   * @return {Integer} - the day\n   */\n  day(day) {\n    if (hasValue(day)) {\n      this.parts.day = day;\n    }\n    return this.parts.day;\n  }\n  /**\n   * Method to get or set the hours.\n   * @param {Integer} [hours] - optional new value for hours\n   * @return {Integer} - the hours\n   */\n  hours(hours) {\n    if (hasValue(hours)) {\n      this.parts.hours = hours;\n    }\n    return this.parts.hours;\n  }\n  /**\n   * Method to get or set the minutes.\n   * @param {Integer} [minutes] - optional new value for minutes\n   * @return {Integer} - the minutes\n   */\n  minutes(minutes) {\n    if (hasValue(minutes)) {\n      this.parts.minutes = minutes;\n    }\n    return this.parts.minutes;\n  }\n  /**\n   * Method to get or set the seconds.\n   * @param {Integer} [seconds] - optional new value for seconds\n   * @return {Integer} - the seconds\n   */\n  seconds(seconds) {\n    if (hasValue(seconds)) {\n      this.parts.seconds = seconds;\n    }\n    return this.parts.seconds;\n  }\n  /**\n   * Method to return a formatted date string in the form `YYYY-MM-DD`.\n   * @param {String} [joint='-'] - optional joining character\n   * @return {String} - formatted date string\n   */\n  date(joint=this.props.dateJoint) {\n    return joinDate(this.parts, joint)\n  }\n  /**\n   * Method to return a formatted time string in the form `HH:MM:SS`.\n   * @param {String} [joint=':''] - optional joining character\n   * @return {String} - formatted time string\n   */\n  time(joint=this.props.timeJoint) {\n    return joinTime(this.parts, joint)\n  }\n  /**\n   * Method to return a formatted timestamp string in the form `YYYY-MM-DD HH:MM:SS`.\n   * @param {Object} [options] - configuration options\n   * @param {String} [options.joint=' '] - joining character between date and time parts\n   * @param {String} [options.dateJoint='-'] - joining character for date segments\n   * @param {String} [options.timeJoint=':'] - joining character for time segments\n   * @return {String} - formatted date/time stamp\n   */\n  stamp(options={}) {\n    return joinTimestamp(this.parts, { ...this.props, ...options })\n  }\n  /**\n   * Method to return a `Date` object\n   * @return {Date} - new date object\n   */\n  dateObject() {\n    return new Date(this.stamp({ joint: 'T', dateJoint: '-', timeJoint: ':' }));\n  }\n  /**\n   * Method to return the number of millseconds since the Unix epoch\n   * @return {Integer} - the number of milliseconds\n   */\n  milliseconds() {\n    return this.dateObject().getTime();\n  }\n  /**\n   * Method to return the number of seconds since the Unix epoch\n   * @return {Integer} - the number of seconds\n   */\n  epochSeconds() {\n    return Math.floor(this.milliseconds() / 1000);\n  }\n  /**\n   * Method to adjust the timestamp.  The duration can be specified as a string containing\n   * one or more items to adjust in either singular or plural form, e.g. `\"1 year, 1 month\"`,\n   * `\"2 years 2 months\"`, etc. Or it can be specified as an object: `{ year: 1, month: 1 }`,\n   * `{ years: 2, months: 2 }`, etc.\n   * @param {String|Object} duration - a string or object of adjustments\n   * @example\n   * ts.adjust(\"1 year 2 months 3 hours\")\n   * @example\n   * ts.adjust({ year: 1, months: 2, hours: 3 })\n   */\n  adjust(duration) {\n    let p = this.parts;\n    const d = isString(duration)\n      ? parseDuration(duration)         // parse string to object\n      : singularDurations(duration);    // convert plurals (e.g. \"hours\") to singular form (e.g. \"hour\")\n    DURATIONS.forEach(\n      unit => {\n        const value = d[unit];\n        if (hasValue(value)) {\n          // By convention we store date elements in singular (year, month, day) and time\n          // elements in plural (hours, minutes, seconds), but we convert all durations to\n          // singluar in parseDuration() and singularDuration() (because it's easier to drop\n          // an 's' from the end of plural than optionally add one.  Here we use the PLURALS\n          // lookup table to map singular hour, minute and second back to their plurals.\n          p[PLURALS[unit]||unit] += value;\n        }\n      }\n    );\n\n    // time underflow\n    while (p.seconds < 0) {\n      p.seconds += 60;\n      p.minutes--;\n    }\n    while (p.minutes < 0) {\n      p.minutes += 60;\n      p.hours--;\n    }\n    while (p.hours < 0) {\n      p.hours += 24;\n      p.day--;\n    }\n\n    // time overflow\n    if (p.seconds > 59) {\n      p.minutes += Math.floor(p.seconds / 60);\n      p.seconds %= 60;\n    }\n    if (p.minutes > 59) {\n      p.hours += Math.floor(p.minutes / 60);\n      p.minutes %= 60;\n    }\n    if (p.hours > 23) {\n      p.day += Math.floor(p.hours / 24);\n      p.hours %= 24;\n    }\n\n    // date underflow\n    while (p.day <= 0) {\n      p.month--;\n      if (p.month <= 0) {\n        p.month += 12;\n        p.year--;\n      }\n      p.day += daysInMonth(p.month, p.year);\n    }\n    while (p.month <= 0) {\n      p.month += 12;\n      p.year--;\n    }\n\n    // month overflow\n    while (p.month > 12) {\n      p.month -= 12;\n      p.year++;\n    }\n\n    // day overflow\n    let dim;\n    while (p.day > (dim = daysInMonth(p.month, p.year))) {\n      p.day -= dim;\n      if (p.month == 12) {\n        p.month = 1;\n        p.year++;\n      }\n      else {\n        p.month++;\n      }\n    }\n\n    return this;\n  }\n  /**\n   * Method to compare the timestamp to another.  The arguments can be any that are accepted\n   * by the constructor.\n   * one or more items to adjust in either singular or plural form, e.g. `\"1 year, 1 month\"`,\n   * `\"2 years 2 months\"`, etc. Or it can be specified as an object: `{ year: 1, month: 1 }`,\n   * `{ years: 2, months: 2 }`, etc.\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Integer} - -1 if the timestamp is before the comparator, 0 if it's equal, +1 if it's after.\n   */\n  compare(...args) {\n    const that  = new Timestamp(...args);\n    const thisp = this.parts;\n    const thatp = that.parts;\n\n    for (let p of STAMP_PARTS) {\n      if (p) {\n        if (thisp[p] < thatp[p]) {\n          this.debug(\"[%s] this[%s] < that[%s]\", p, thisp[p], thatp[p])\n          return -1;\n        }\n        else if (thisp[p] > thatp[p]) {\n          this.debug(\"[%s] this[%s] > that[%s]\", p, thisp[p], thatp[p])\n          return 1;\n        }\n        else {\n          this.debug(\"[%s] this[%s] = that[%s]\", p, thisp[p], thatp[p])\n        }\n      }\n    }\n    return 0;\n  }\n  /**\n   * Method to compare one timestamp to another for equality\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Boolean} - true if the timestamp is equal to the operand\n   */\n  equal(...args) {\n    return this.compare(...args) == 0;\n  }\n  /**\n   * Method to test for the timestamp coming before another timestamp\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Boolean} - true if the timestamp is before the operand\n   */\n  before(...args) {\n    return this.compare(...args) == -1;\n  }\n  /**\n   * Method to test for the timestamp coming after another timestamp\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Boolean} - true if the timestamp is after the operand\n   */\n  after(...args) {\n    return this.compare(...args) == 1;\n  }\n  /**\n   * Method to test for the timestamp being equal to or coming after another timestamp\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Boolean} - true if the timestamp is equal to or coming after the operand\n   */\n  notBefore(...args) {\n    return this.compare(...args) >= 0;\n  }\n  /**\n   * Method to test for the timestamp being equal to or coming before another timestamp\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Boolean} - true if the timestamp is equal to or coming before the operand\n   */\n  notAfter(...args) {\n    return this.compare(...args) <= 0;\n  }\n}\n\n/**\n * Function to determine is a string is a valid timestamp.\n * @param {String} ts - timestamp string\n * @return {Boolean} - value indicating if the string is a timestamp\n */\nexport const isTimestamp = ts =>\n  isString(ts) && ts.match(STAMP_REGEX);\n\n/**\n * Function to split a timestamp into its constituent parts\n * @param {String} ts - timestamp string\n * @return {Object} - object containing `year`, `month`, `day`, `hours`, `minutes` and `seconds`.\n */\nexport const splitTimestamp = ts => {\n  const match = ts.match(STAMP_REGEX) || fail(\"Invalid timestamp: \", ts);\n  let result = { };\n  STAMP_PARTS.forEach(\n    (part, n) => {\n      if (part && match[n]) {\n        result[part] = parseInt(match[n]);\n      }\n    }\n  );\n  // console.log('%s => ', ts, result);\n  return result;\n}\n\n/**\n * Function to determine is a valid is a `Date` object\n * @param {Date} date - date object or other value\n * @return {Boolean} - value indicating if the `date` is a `Date` object\n */\nexport const isDate = date =>\n  date instanceof Date;\n\n/**\n * Function to return an object containing the constituent timestamp parts for the current time.\n * @return {Object} - object containing `year`, `month`, `day`, `hours`, `minutes` and `seconds`.\n */\nexport const unpackNow = () =>\n  unpackDate(new Date());\n\n/**\n * Function to return an object containing the constituent timestamp parts for a date/time.\n * @param {Date} date - date object or string that can be parsed by `Date.parse()`\n * @return {Object} - object containing `year`, `month`, `day`, `hours`, `minutes` and `seconds`.\n */\nexport const parseDate = (date) =>\n  unpackDate(new Date(date));\n\n/**\n * Function to return an object containing the constituent timestamp parts for a `Date` object\n * @param {Date} date - date object\n * @return {Object} - object containing `year`, `month`, `day`, `hours`, `minutes` and `seconds`.\n */\nexport const unpackDate = date => ({\n  year:    date.getFullYear(),\n  month:   date.getMonth() + 1,\n  day:     date.getDate(),\n  hours:   date.getHours(),\n  minutes: date.getMinutes(),\n  seconds: date.getSeconds(),\n})\n\n/**\n * Function to parse a duration string, e.g. `1 hour 3 minutes`.\n * Quantities must be integers. Units can be singular (e.g. `hour`) or plural (e.g. `hours`).\n * Other characters may appear between sections, e.g. `1 hour, 2 minutes and 3 seconds`.\n * @param {Date} duration - duration string\n * @return {Object} - object containing any of `year`, `month`, `day`, `hour`, `minute` and `second`.\n */\nexport const parseDuration = duration => {\n  const match = duration.matchAll(/(-?\\d+)\\s*(\\w+)/g);\n  let result = { };\n\n  for (let m of match) {\n    const n = parseInt(m[1]);           // convert quantity to integer\n    const d = m[2].replace(/s$/, '');   // convert plural to singular\n    result[d] = n;\n  }\n  return result;\n}\n\n/**\n * Function to convert an object containing any plural duration units (e.g. `hours`) to the singular counterpart (e.g. `hour`).\n * @param {Object} duration - object containing duration elements, either plural or singluar.\n * @return {Object} - object containing any of `year`, `month`, `day`, `hour`, `minute` and `second`.\n */\nexport const singularDurations = duration => {\n  let result = { };\n  Object.entries(duration).forEach(\n    ([key, value]) => {\n      result[key.replace(/s$/, '')] = value;\n    }\n  )\n  return result;\n}\n\n/**\n * Function to join the constituent parts of a time stamp into a string\n * @param {Object} ts - object containing `year`, `month`, `day`, and optionally, `hours`, `minutes` and `seconds`.\n * @param {String} ts.year - the year as an integer\n * @param {String} ts.month - the month as an integer from 1 to 12\n * @param {String} ts.day - the month as an integer\n * @param {String} ts.[hours] - the hours as an integer from 0 to 23\n * @param {String} ts.[minutes] - the minutes as an integer from 0 to 59\n * @param {String} ts.[seconds] - the seconds as an integer from 0 to 59\n * @param {String} [config] - optional configuration options\n * @param {String} [config.joint=' '] - joining character between date and time parts\n * @param {String} [config.dateJoint='-'] - joining character for date segments\n * @param {String} [config.timeJoint=':'] - joining character for time segments\n * @return {String} - timestamp string of the form `YYYY-MM-DD` or `YYYY-MM-DD HH:MM:SS`\n */\nexport const joinTimestamp = (ts, config={}) => {\n  const date = joinDate(ts, config.dateJoint);\n\n  if (hasValue(ts.hours)) {\n    const time = joinTime(ts, config.timeJoint);\n    return [date, time].join(hasValue(config.joint) ? config.joint : defaults.joint);\n  }\n  else {\n    return date;\n  }\n}\n\n/**\n * Function to join the constituent parts of a date\n * @param {Object} ts - object containing `year`, `month`, `day`\n * @param {String} ts.year - the year as an integer\n * @param {String} ts.month - the month as an integer from 1 to 12\n * @param {String} ts.day - the month as an integer\n * @param {String} [joint='-'] - optional joining character for date segments\n * @return {String} - date string of the form `YYYY-MM-DD`\n */\nexport const joinDate = (ts, joint=defaults.dateJoint) =>\n  [\n    String(ts.year).padStart(4, '0'),\n    String(ts.month).padStart(2, '0'),\n    String(ts.day).padStart(2, '0'),\n  ].join(joint)\n\n/**\n * Function to join the constituent parts of a time into a string\n * @param {Object} ts - object containing `hours`, `minutes` and `seconds`.\n * @param {String} ts.hours - the hours as an integer from 0 to 23\n * @param {String} ts.minutes - the minutes as an integer from 0 to 59\n * @param {String} ts.seconds - the seconds as an integer from 0 to 59\n * @param {String} [joint=':'] - optional joining character for time segments\n * @return {String} - time string of the form `HH:MM:SS`\n */\nexport const joinTime = (ts, joint=defaults.timeJoint) =>\n  [\n    String(ts.hours).padStart(2, '0'),\n    String(ts.minutes).padStart(2, '0'),\n    String(ts.seconds).padStart(2, '0'),\n  ].join(joint)\n\n\n/**\n * Function to return the number of days in a month.\n * @param {Integer} month - the month as an integer from 1 to 12\n * @param {Intger} year - the year as an integer, e.g. 2022\n * @return {Integer} - the number of days in the month: 28, 29, 30 or 31\n */\nexport const daysInMonth = (month, year) => {\n  if (month === 4 || month === 6 || month === 9 || month === 11) {\n    return 30;\n  }\n  else if (month == 2) {\n    return leapYear(year) ? 29 : 28;\n  }\n  else {\n    return 31;\n  }\n}\n\n/**\n * Function to determine if a year is a leap year\n * @param {Intger} year - the year as an integer, e.g. 2022\n * @return {Boolean} - true if the year is a leap year or false otherwise\n */\nexport const leapYear = year => {\n  if (year % 4) {\n    return false;\n  }\n  else if (year % 400 === 0) {\n    return true;\n  }\n  else if (year % 100 === 0) {\n    return false;\n  }\n  else {\n    return true;\n  }\n}\n\n\n/**\n * Function to create a new `Timestamp` object\n * @param {String|Integer|Date|Object} [ts] - timestamp\n * @param {Object} [options] - configuration options\n * @param {String} [options.joint=' '] - joining character between date and time parts\n * @param {String} [options.dateJoint='-'] - joining character for date segments\n * @param {String} [options.timeJoint=':'] - joining character for time segments\n * @return {Object} - a `Timestamp` object\n */\nexport const timestamp = (ts, options) => new Timestamp(ts, options)\n\nexport default Timestamp",
+    "content": "import {\n  hasValue, isInteger, isObject, isString, noValue,\n  fail, doNothing\n} from \"@abw/badger-utils\";\n\nconst MATCH_DATE  = '(\\\\d{4})\\\\D(\\\\d{1,2})\\\\D(\\\\d{1,2})';\nconst MATCH_TIME  = '(\\\\d{1,2})\\\\D(\\\\d{2})\\\\D(\\\\d{2})';\nconst MATCH_STAMP = `^\\\\s*${MATCH_DATE}(?:(?:T|\\\\s)${MATCH_TIME})?`;\nconst STAMP_REGEX = new RegExp(MATCH_STAMP);\nconst STAMP_PARTS = [undefined, 'year', 'month', 'day', 'hours', 'minutes', 'seconds'];\nconst DURATIONS   = ['year', 'month', 'day', 'hour', 'minute', 'second'];\nconst PLURALS     = { hour: 'hours', minute: 'minutes', second: 'seconds' };\n\n/**\n * Default configuration options.\n */\nconst defaults = {\n  joint:     ' ',\n  dateJoint: '-',\n  timeJoint: ':',\n  locale:    'default',\n}\n\n/**\n * The Timestamp class implements an object for parsing, manipulating\n * and formatting ISO8601 timestamps.\n */\nexport class Timestamp {\n  /**\n   * Constructor for Timestamp object.\n   * @param {String|Integer|Date|Object} [ts] - timestamp\n   * @param {Object} [options] - configuration options\n   * @param {String} [options.joint=' '] - joining character between date and time parts\n   * @param {String} [options.dateJoint='-'] - joining character for date segments\n   * @param {String} [options.timeJoint=':'] - joining character for time segments\n   * @param {String} [options.locale='default'] - locale for formatting dates and times\n   */\n  constructor(ts, options) {\n    const props = { ...defaults, ...options };\n    this.props = props;\n\n    this.debug = props.debug\n      ? console.log.bind(console)\n      : doNothing;\n\n    if (noValue(ts)) {\n      // use current time if no argument provided\n      this.parts = unpackNow()\n    }\n    else if (ts instanceof Timestamp) {\n      // copy constructor\n      this.parts = { ...ts.parts };\n    }\n    else if (isTimestamp(ts)) {\n      // split timestamp string\n      this.parts = splitTimestamp(ts)\n    }\n    else if (isString(ts)) {\n      // parse another date string\n      this.parts = parseDate(ts)\n    }\n    else if (isDate(ts)) {\n      // unpack a Date object\n      this.parts = unpackDate(ts)\n    }\n    else if (isInteger(ts)) {\n      // milliseconds since the epoch\n      this.parts = parseDate(ts)\n    }\n    else if (isObject(ts)) {\n      if (hasValue(ts.unix)) {\n        // seconds since unix epoch time, multiply by 1000 to get JS milliseconds\n        this.parts = parseDate(ts.unix * 1000);\n      }\n      else if (hasValue(ts.ms)) {\n        // milliseconds since unix epoch time\n        this.parts = parseDate(ts.ms);\n      }\n      else {\n        // object containing year, month, day, etc.\n        this.parts = ts\n      }\n    }\n    else {\n      fail(\"Invalid timestamp: \", ts)\n    }\n  }\n  /**\n   * Method to return a new object as a copy of the current object\n   * @return {Object} - new `Timestamp` object\n   */\n  copy() {\n    return new Timestamp(this.parts);\n  }\n  /**\n   * Method to get or set the year.\n   * @param {Integer} [year] - optional new value for year\n   * @return {Integer} - the year\n   */\n  year(year) {\n    if (hasValue(year)) {\n      this.parts.year = year;\n    }\n    return this.parts.year;\n  }\n  /**\n   * Method to get or set the month.\n   * @param {Integer} [month] - optional new value for month\n   * @return {Integer} - the month\n   */\n  month(month) {\n    if (hasValue(month)) {\n      this.parts.month = month;\n      this.correct();\n    }\n    return this.parts.month;\n  }\n  /**\n   * Method to get or set the day.\n   * @param {Integer} [day] - optional new value for day\n   * @return {Integer} - the day\n   */\n  day(day) {\n    if (hasValue(day)) {\n      this.parts.day = day;\n      this.correct();\n    }\n    return this.parts.day;\n  }\n  /**\n   * Method to get or set the hours.\n   * @param {Integer} [hours] - optional new value for hours\n   * @return {Integer} - the hours\n   */\n  hours(hours) {\n    if (hasValue(hours)) {\n      this.parts.hours = hours;\n      this.correct();\n    }\n    return this.parts.hours;\n  }\n  /**\n   * Method to get or set the minutes.\n   * @param {Integer} [minutes] - optional new value for minutes\n   * @return {Integer} - the minutes\n   */\n  minutes(minutes) {\n    if (hasValue(minutes)) {\n      this.parts.minutes = minutes;\n      this.correct();\n    }\n    return this.parts.minutes;\n  }\n  /**\n   * Method to get or set the seconds.\n   * @param {Integer} [seconds] - optional new value for seconds\n   * @return {Integer} - the seconds\n   */\n  seconds(seconds) {\n    if (hasValue(seconds)) {\n      this.parts.seconds = seconds;\n      this.correct();\n    }\n    return this.parts.seconds;\n  }\n  /**\n   * Method to return the month name.\n   * @param {String} [format='long'] - optional format: `full`, `long`, `medium`, `short`\n   * @return {String} - the month name\n   */\n  monthName(format='long') {\n    const mon = this.dateObject().toLocaleString(\n      this.props.locale,\n      { month: format }\n    );\n    // for some insane reason which I can't fathom, the short format\n    // returns 3 letter words for every month (Jan, Feb, Mar, etc),\n    // except September which is returned as \"Sept\". To avoid this\n    // inconsistency I'm shortening it to \"Sep\".\n    return format === 'short'\n      ? mon.slice(0, 3)\n      : mon;\n  }\n  /**\n   * Method to return the weekday name as a number from 0 (Sunday) to 6 (Saturday)\n   * @return {Integer} - the weekday number\n   */\n  weekday() {\n    return this.dateObject().getDay()\n  }\n  /**\n   * Method to return the weekday name.\n   * @param {String} [format='long'] - optional format: `full`, `long`, `medium`, `short`\n   * @return {String} - the weekday name\n   */\n  weekdayName(format='long') {\n    return this.dateObject().toLocaleString(\n      this.props.locale,\n      { weekday: format }\n    );\n  }\n  /**\n   * Method to return a formatted date string in the form `YYYY-MM-DD`.\n   * @param {String} [joint='-'] - optional joining character\n   * @return {String} - formatted date string\n   */\n  date(joint=this.props.dateJoint) {\n    return joinDate(this.parts, joint)\n  }\n  /**\n   * Method to return a formatted time string in the form `HH:MM:SS`.\n   * @param {String} [joint=':''] - optional joining character\n   * @return {String} - formatted time string\n   */\n  time(joint=this.props.timeJoint) {\n    return joinTime(this.parts, joint)\n  }\n  /**\n   * Method to return a formatted timestamp string in the form `YYYY-MM-DD HH:MM:SS`.\n   * @param {Object} [options] - configuration options\n   * @param {String} [options.joint=' '] - joining character between date and time parts\n   * @param {String} [options.dateJoint='-'] - joining character for date segments\n   * @param {String} [options.timeJoint=':'] - joining character for time segments\n   * @return {String} - formatted date/time stamp\n   */\n  stamp(options={}) {\n    return joinTimestamp(this.parts, { ...this.props, ...options })\n  }\n  /**\n   * Method to return a `Date` object\n   * @return {Date} - new date object\n   */\n  dateObject() {\n    return new Date(this.stamp({ joint: 'T', dateJoint: '-', timeJoint: ':' }));\n  }\n  /**\n   * Method to return the number of millseconds since the Unix epoch\n   * @return {Integer} - the number of milliseconds\n   */\n  epochMilliseconds() {\n    return this.dateObject().getTime();\n  }\n  /**\n   * Method to return the number of seconds since the Unix epoch\n   * @return {Integer} - the number of seconds\n   */\n  epochSeconds() {\n    return Math.floor(this.epochMilliseconds() / 1000);\n  }\n  /**\n   * Method to adjust the timestamp.  The duration can be specified as a string containing\n   * one or more items to adjust in either singular or plural form, e.g. `\"1 year, 1 month\"`,\n   * `\"2 years 2 months\"`, etc. Or it can be specified as an object: `{ year: 1, month: 1 }`,\n   * `{ years: 2, months: 2 }`, etc.  Any overflow or underflow will be corrected by the\n   * {@link correct()} method.\n   * @param {String|Object} duration - a string or object of adjustments\n   * @example\n   * ts.adjust(\"1 year 2 months 3 hours\")\n   * @example\n   * ts.adjust({ year: 1, months: 2, hours: 3 })\n   */\n  adjust(duration) {\n    let p = this.parts;\n    const d = isString(duration)\n      ? parseDuration(duration)         // parse string to object\n      : singularDurations(duration);    // convert plurals (e.g. \"hours\") to singular form (e.g. \"hour\")\n    DURATIONS.forEach(\n      unit => {\n        const value = d[unit];\n        if (hasValue(value)) {\n          // By convention we store date elements in singular (year, month, day) and time\n          // elements in plural (hours, minutes, seconds), but we convert all durations to\n          // singluar in parseDuration() and singularDuration() (because it's easier to drop\n          // an 's' from the end of plural than optionally add one.  Here we use the PLURALS\n          // lookup table to map singular hour, minute and second back to their plurals.\n          p[PLURALS[unit]||unit] += value;\n        }\n      }\n    );\n    return this.correct();\n  }\n  /**\n   * Method to correct any underflow or overflow in the timestamp.  For example, if the\n   * month is set to 13 then it will be set to 1 and the year will be incremented.\n   */\n  correct() {\n    let p = this.parts;\n\n    // time underflow\n    while (p.seconds < 0) {\n      p.seconds += 60;\n      p.minutes--;\n    }\n    while (p.minutes < 0) {\n      p.minutes += 60;\n      p.hours--;\n    }\n    while (p.hours < 0) {\n      p.hours += 24;\n      p.day--;\n    }\n\n    // time overflow\n    if (p.seconds > 59) {\n      p.minutes += Math.floor(p.seconds / 60);\n      p.seconds %= 60;\n    }\n    if (p.minutes > 59) {\n      p.hours += Math.floor(p.minutes / 60);\n      p.minutes %= 60;\n    }\n    if (p.hours > 23) {\n      p.day += Math.floor(p.hours / 24);\n      p.hours %= 24;\n    }\n\n    // date underflow\n    while (p.day <= 0) {\n      p.month--;\n      if (p.month <= 0) {\n        p.month += 12;\n        p.year--;\n      }\n      p.day += daysInMonth(p.month, p.year);\n    }\n    while (p.month <= 0) {\n      p.month += 12;\n      p.year--;\n    }\n\n    // month overflow\n    while (p.month > 12) {\n      p.month -= 12;\n      p.year++;\n    }\n\n    // day overflow\n    let dim;\n    while (p.day > (dim = daysInMonth(p.month, p.year))) {\n      p.day -= dim;\n      if (p.month == 12) {\n        p.month = 1;\n        p.year++;\n      }\n      else {\n        p.month++;\n      }\n    }\n\n    return this;\n  }\n  /**\n   * Method to compare the timestamp to another.  The arguments can be any that are accepted\n   * by the constructor.\n   * one or more items to adjust in either singular or plural form, e.g. `\"1 year, 1 month\"`,\n   * `\"2 years 2 months\"`, etc. Or it can be specified as an object: `{ year: 1, month: 1 }`,\n   * `{ years: 2, months: 2 }`, etc.\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Integer} - -1 if the timestamp is before the comparator, 0 if it's equal, +1 if it's after.\n   */\n  compare(...args) {\n    const that  = new Timestamp(...args);\n    const thisp = this.parts;\n    const thatp = that.parts;\n\n    for (let p of STAMP_PARTS) {\n      if (p) {\n        if (thisp[p] < thatp[p]) {\n          this.debug(\"[%s] this[%s] < that[%s]\", p, thisp[p], thatp[p])\n          return -1;\n        }\n        else if (thisp[p] > thatp[p]) {\n          this.debug(\"[%s] this[%s] > that[%s]\", p, thisp[p], thatp[p])\n          return 1;\n        }\n        else {\n          this.debug(\"[%s] this[%s] = that[%s]\", p, thisp[p], thatp[p])\n        }\n      }\n    }\n    return 0;\n  }\n  /**\n   * Method to compare one timestamp to another for equality\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Boolean} - true if the timestamp is equal to the operand\n   */\n  equal(...args) {\n    return this.compare(...args) == 0;\n  }\n  /**\n   * Method to test for the timestamp coming before another timestamp\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Boolean} - true if the timestamp is before the operand\n   */\n  before(...args) {\n    return this.compare(...args) == -1;\n  }\n  /**\n   * Method to test for the timestamp coming after another timestamp\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Boolean} - true if the timestamp is after the operand\n   */\n  after(...args) {\n    return this.compare(...args) == 1;\n  }\n  /**\n   * Method to test for the timestamp being equal to or coming after another timestamp\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Boolean} - true if the timestamp is equal to or coming after the operand\n   */\n  notBefore(...args) {\n    return this.compare(...args) >= 0;\n  }\n  /**\n   * Method to test for the timestamp being equal to or coming before another timestamp\n   * @param {Array} args - any argument(s) accepted by the constructor\n   * @return {Boolean} - true if the timestamp is equal to or coming before the operand\n   */\n  notAfter(...args) {\n    return this.compare(...args) <= 0;\n  }\n}\n\n/**\n * Function to determine is a string is a valid timestamp.\n * @param {String} ts - timestamp string\n * @return {Boolean} - value indicating if the string is a timestamp\n */\nexport const isTimestamp = ts =>\n  isString(ts) && ts.match(STAMP_REGEX);\n\n/**\n * Function to split a timestamp into its constituent parts\n * @param {String} ts - timestamp string\n * @return {Object} - object containing `year`, `month`, `day`, `hours`, `minutes` and `seconds`.\n */\nexport const splitTimestamp = ts => {\n  const match = ts.match(STAMP_REGEX) || fail(\"Invalid timestamp: \", ts);\n  let result = { };\n  STAMP_PARTS.forEach(\n    (part, n) => {\n      if (part && match[n]) {\n        result[part] = parseInt(match[n]);\n      }\n    }\n  );\n  // console.log('%s => ', ts, result);\n  return result;\n}\n\n/**\n * Function to determine is a valid is a `Date` object\n * @param {Date} date - date object or other value\n * @return {Boolean} - value indicating if the `date` is a `Date` object\n */\nexport const isDate = date =>\n  date instanceof Date;\n\n/**\n * Function to return an object containing the constituent timestamp parts for the current time.\n * @return {Object} - object containing `year`, `month`, `day`, `hours`, `minutes` and `seconds`.\n */\nexport const unpackNow = () =>\n  unpackDate(new Date());\n\n/**\n * Function to return an object containing the constituent timestamp parts for a date/time.\n * @param {Date} date - date object or string that can be parsed by `Date.parse()`\n * @return {Object} - object containing `year`, `month`, `day`, `hours`, `minutes` and `seconds`.\n */\nexport const parseDate = (date) =>\n  unpackDate(new Date(date));\n\n/**\n * Function to return an object containing the constituent timestamp parts for a `Date` object\n * @param {Date} date - date object\n * @return {Object} - object containing `year`, `month`, `day`, `hours`, `minutes` and `seconds`.\n */\nexport const unpackDate = date => ({\n  year:    date.getFullYear(),\n  month:   date.getMonth() + 1,\n  day:     date.getDate(),\n  hours:   date.getHours(),\n  minutes: date.getMinutes(),\n  seconds: date.getSeconds(),\n})\n\n/**\n * Function to parse a duration string, e.g. `1 hour 3 minutes`.\n * Quantities must be integers. Units can be singular (e.g. `hour`) or plural (e.g. `hours`).\n * Other characters may appear between sections, e.g. `1 hour, 2 minutes and 3 seconds`.\n * @param {Date} duration - duration string\n * @return {Object} - object containing any of `year`, `month`, `day`, `hour`, `minute` and `second`.\n */\nexport const parseDuration = duration => {\n  const match = duration.matchAll(/(-?\\d+)\\s*(\\w+)/g);\n  let result = { };\n\n  for (let m of match) {\n    const n = parseInt(m[1]);           // convert quantity to integer\n    const d = m[2].replace(/s$/, '');   // convert plural to singular\n    result[d] = n;\n  }\n  return result;\n}\n\n/**\n * Function to convert an object containing any plural duration units (e.g. `hours`) to the singular counterpart (e.g. `hour`).\n * @param {Object} duration - object containing duration elements, either plural or singluar.\n * @return {Object} - object containing any of `year`, `month`, `day`, `hour`, `minute` and `second`.\n */\nexport const singularDurations = duration => {\n  let result = { };\n  Object.entries(duration).forEach(\n    ([key, value]) => {\n      result[key.replace(/s$/, '')] = value;\n    }\n  )\n  return result;\n}\n\n/**\n * Function to join the constituent parts of a time stamp into a string\n * @param {Object} ts - object containing `year`, `month`, `day`, and optionally, `hours`, `minutes` and `seconds`.\n * @param {String} ts.year - the year as an integer\n * @param {String} ts.month - the month as an integer from 1 to 12\n * @param {String} ts.day - the month as an integer\n * @param {String} ts.[hours] - the hours as an integer from 0 to 23\n * @param {String} ts.[minutes] - the minutes as an integer from 0 to 59\n * @param {String} ts.[seconds] - the seconds as an integer from 0 to 59\n * @param {String} [config] - optional configuration options\n * @param {String} [config.joint=' '] - joining character between date and time parts\n * @param {String} [config.dateJoint='-'] - joining character for date segments\n * @param {String} [config.timeJoint=':'] - joining character for time segments\n * @return {String} - timestamp string of the form `YYYY-MM-DD` or `YYYY-MM-DD HH:MM:SS`\n */\nexport const joinTimestamp = (ts, config={}) => {\n  const date = joinDate(ts, config.dateJoint);\n\n  if (hasValue(ts.hours)) {\n    const time = joinTime(ts, config.timeJoint);\n    return [date, time].join(hasValue(config.joint) ? config.joint : defaults.joint);\n  }\n  else {\n    return date;\n  }\n}\n\n/**\n * Function to join the constituent parts of a date\n * @param {Object} ts - object containing `year`, `month`, `day`\n * @param {String} ts.year - the year as an integer\n * @param {String} ts.month - the month as an integer from 1 to 12\n * @param {String} ts.day - the month as an integer\n * @param {String} [joint='-'] - optional joining character for date segments\n * @return {String} - date string of the form `YYYY-MM-DD`\n */\nexport const joinDate = (ts, joint=defaults.dateJoint) =>\n  [\n    String(ts.year).padStart(4, '0'),\n    String(ts.month).padStart(2, '0'),\n    String(ts.day).padStart(2, '0'),\n  ].join(joint)\n\n/**\n * Function to join the constituent parts of a time into a string\n * @param {Object} ts - object containing `hours`, `minutes` and `seconds`.\n * @param {String} ts.hours - the hours as an integer from 0 to 23\n * @param {String} ts.minutes - the minutes as an integer from 0 to 59\n * @param {String} ts.seconds - the seconds as an integer from 0 to 59\n * @param {String} [joint=':'] - optional joining character for time segments\n * @return {String} - time string of the form `HH:MM:SS`\n */\nexport const joinTime = (ts, joint=defaults.timeJoint) =>\n  [\n    String(ts.hours).padStart(2, '0'),\n    String(ts.minutes).padStart(2, '0'),\n    String(ts.seconds).padStart(2, '0'),\n  ].join(joint)\n\n\n/**\n * Function to return the number of days in a month.\n * @param {Integer} month - the month as an integer from 1 to 12\n * @param {Intger} year - the year as an integer, e.g. 2022\n * @return {Integer} - the number of days in the month: 28, 29, 30 or 31\n */\nexport const daysInMonth = (month, year) => {\n  if (month === 4 || month === 6 || month === 9 || month === 11) {\n    return 30;\n  }\n  else if (month == 2) {\n    return leapYear(year) ? 29 : 28;\n  }\n  else {\n    return 31;\n  }\n}\n\n/**\n * Function to determine if a year is a leap year\n * @param {Intger} year - the year as an integer, e.g. 2022\n * @return {Boolean} - true if the year is a leap year or false otherwise\n */\nexport const leapYear = year => {\n  if (year % 4) {\n    return false;\n  }\n  else if (year % 400 === 0) {\n    return true;\n  }\n  else if (year % 100 === 0) {\n    return false;\n  }\n  else {\n    return true;\n  }\n}\n\n\n/**\n * Function to create a new `Timestamp` object\n * @param {String|Integer|Date|Object} [ts] - timestamp\n * @param {Object} [options] - configuration options\n * @param {String} [options.joint=' '] - joining character between date and time parts\n * @param {String} [options.dateJoint='-'] - joining character for date segments\n * @param {String} [options.timeJoint=':'] - joining character for time segments\n * @return {Object} - a `Timestamp` object\n */\nexport const timestamp = (ts, options) => new Timestamp(ts, options)\n\nexport default Timestamp",
     "static": true,
     "longname": "/Users/abw/js/badger-timestamp/src/Timestamp.js",
     "access": "public",
@@ -736,7 +736,7 @@
     "lineNumber": 17,
     "type": {
       "types": [
-        "{\"joint\": string, \"dateJoint\": string, \"timeJoint\": string}"
+        "{\"joint\": string, \"dateJoint\": string, \"timeJoint\": string, \"locale\": string}"
       ]
     },
     "ignore": true
@@ -753,7 +753,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{Timestamp}",
     "description": "The Timestamp class implements an object for parsing, manipulating\nand formatting ISO8601 timestamps.",
-    "lineNumber": 27,
+    "lineNumber": 28,
     "interface": false
   },
   {
@@ -767,7 +767,7 @@
     "longname": "src/Timestamp.js~Timestamp#constructor",
     "access": "public",
     "description": "Constructor for Timestamp object.",
-    "lineNumber": 36,
+    "lineNumber": 38,
     "params": [
       {
         "nullable": null,
@@ -827,6 +827,18 @@
         "defaultRaw": "':'",
         "name": "options.timeJoint",
         "description": "joining character for time segments"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "'default'",
+        "defaultRaw": "'default'",
+        "name": "options.locale",
+        "description": "locale for formatting dates and times"
       }
     ]
   },
@@ -839,7 +851,7 @@
     "longname": "src/Timestamp.js~Timestamp#props",
     "access": "public",
     "description": null,
-    "lineNumber": 38,
+    "lineNumber": 40,
     "undocument": true,
     "type": {
       "types": [
@@ -856,7 +868,7 @@
     "longname": "src/Timestamp.js~Timestamp#debug",
     "access": "public",
     "description": null,
-    "lineNumber": 40,
+    "lineNumber": 42,
     "undocument": true,
     "type": {
       "types": [
@@ -873,7 +885,7 @@
     "longname": "src/Timestamp.js~Timestamp#parts",
     "access": "public",
     "description": null,
-    "lineNumber": 46,
+    "lineNumber": 48,
     "undocument": true,
     "type": {
       "types": [
@@ -892,7 +904,7 @@
     "longname": "src/Timestamp.js~Timestamp#copy",
     "access": "public",
     "description": "Method to return a new object as a copy of the current object",
-    "lineNumber": 90,
+    "lineNumber": 92,
     "return": {
       "nullable": null,
       "types": [
@@ -914,7 +926,7 @@
     "longname": "src/Timestamp.js~Timestamp#year",
     "access": "public",
     "description": "Method to get or set the year.",
-    "lineNumber": 98,
+    "lineNumber": 100,
     "params": [
       {
         "nullable": null,
@@ -947,7 +959,7 @@
     "longname": "src/Timestamp.js~Timestamp#month",
     "access": "public",
     "description": "Method to get or set the month.",
-    "lineNumber": 109,
+    "lineNumber": 111,
     "params": [
       {
         "nullable": null,
@@ -980,7 +992,7 @@
     "longname": "src/Timestamp.js~Timestamp#day",
     "access": "public",
     "description": "Method to get or set the day.",
-    "lineNumber": 120,
+    "lineNumber": 123,
     "params": [
       {
         "nullable": null,
@@ -1013,7 +1025,7 @@
     "longname": "src/Timestamp.js~Timestamp#hours",
     "access": "public",
     "description": "Method to get or set the hours.",
-    "lineNumber": 131,
+    "lineNumber": 135,
     "params": [
       {
         "nullable": null,
@@ -1046,7 +1058,7 @@
     "longname": "src/Timestamp.js~Timestamp#minutes",
     "access": "public",
     "description": "Method to get or set the minutes.",
-    "lineNumber": 142,
+    "lineNumber": 147,
     "params": [
       {
         "nullable": null,
@@ -1079,7 +1091,7 @@
     "longname": "src/Timestamp.js~Timestamp#seconds",
     "access": "public",
     "description": "Method to get or set the seconds.",
-    "lineNumber": 153,
+    "lineNumber": 159,
     "params": [
       {
         "nullable": null,
@@ -1104,6 +1116,98 @@
   {
     "__docId__": 77,
     "kind": "method",
+    "name": "monthName",
+    "memberof": "src/Timestamp.js~Timestamp",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Timestamp.js~Timestamp#monthName",
+    "access": "public",
+    "description": "Method to return the month name.",
+    "lineNumber": 171,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "'long'",
+        "defaultRaw": "'long'",
+        "name": "format",
+        "description": "optional format: `full`, `long`, `medium`, `short`"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "String"
+      ],
+      "spread": false,
+      "description": "the month name"
+    }
+  },
+  {
+    "__docId__": 78,
+    "kind": "method",
+    "name": "weekday",
+    "memberof": "src/Timestamp.js~Timestamp",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Timestamp.js~Timestamp#weekday",
+    "access": "public",
+    "description": "Method to return the weekday name as a number from 0 (Sunday) to 6 (Saturday)",
+    "lineNumber": 188,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Integer"
+      ],
+      "spread": false,
+      "description": "the weekday number"
+    },
+    "params": []
+  },
+  {
+    "__docId__": 79,
+    "kind": "method",
+    "name": "weekdayName",
+    "memberof": "src/Timestamp.js~Timestamp",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Timestamp.js~Timestamp#weekdayName",
+    "access": "public",
+    "description": "Method to return the weekday name.",
+    "lineNumber": 196,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "'long'",
+        "defaultRaw": "'long'",
+        "name": "format",
+        "description": "optional format: `full`, `long`, `medium`, `short`"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "String"
+      ],
+      "spread": false,
+      "description": "the weekday name"
+    }
+  },
+  {
+    "__docId__": 80,
+    "kind": "method",
     "name": "date",
     "memberof": "src/Timestamp.js~Timestamp",
     "generator": false,
@@ -1112,7 +1216,7 @@
     "longname": "src/Timestamp.js~Timestamp#date",
     "access": "public",
     "description": "Method to return a formatted date string in the form `YYYY-MM-DD`.",
-    "lineNumber": 164,
+    "lineNumber": 207,
     "params": [
       {
         "nullable": null,
@@ -1137,7 +1241,7 @@
     }
   },
   {
-    "__docId__": 78,
+    "__docId__": 81,
     "kind": "method",
     "name": "time",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1147,7 +1251,7 @@
     "longname": "src/Timestamp.js~Timestamp#time",
     "access": "public",
     "description": "Method to return a formatted time string in the form `HH:MM:SS`.",
-    "lineNumber": 172,
+    "lineNumber": 215,
     "params": [
       {
         "nullable": null,
@@ -1172,7 +1276,7 @@
     }
   },
   {
-    "__docId__": 79,
+    "__docId__": 82,
     "kind": "method",
     "name": "stamp",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1182,7 +1286,7 @@
     "longname": "src/Timestamp.js~Timestamp#stamp",
     "access": "public",
     "description": "Method to return a formatted timestamp string in the form `YYYY-MM-DD HH:MM:SS`.",
-    "lineNumber": 183,
+    "lineNumber": 226,
     "params": [
       {
         "nullable": null,
@@ -1241,7 +1345,7 @@
     }
   },
   {
-    "__docId__": 80,
+    "__docId__": 83,
     "kind": "method",
     "name": "dateObject",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1251,7 +1355,7 @@
     "longname": "src/Timestamp.js~Timestamp#dateObject",
     "access": "public",
     "description": "Method to return a `Date` object",
-    "lineNumber": 190,
+    "lineNumber": 233,
     "return": {
       "nullable": null,
       "types": [
@@ -1263,17 +1367,17 @@
     "params": []
   },
   {
-    "__docId__": 81,
+    "__docId__": 84,
     "kind": "method",
-    "name": "milliseconds",
+    "name": "epochMilliseconds",
     "memberof": "src/Timestamp.js~Timestamp",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/Timestamp.js~Timestamp#milliseconds",
+    "longname": "src/Timestamp.js~Timestamp#epochMilliseconds",
     "access": "public",
     "description": "Method to return the number of millseconds since the Unix epoch",
-    "lineNumber": 197,
+    "lineNumber": 240,
     "return": {
       "nullable": null,
       "types": [
@@ -1285,7 +1389,7 @@
     "params": []
   },
   {
-    "__docId__": 82,
+    "__docId__": 85,
     "kind": "method",
     "name": "epochSeconds",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1295,7 +1399,7 @@
     "longname": "src/Timestamp.js~Timestamp#epochSeconds",
     "access": "public",
     "description": "Method to return the number of seconds since the Unix epoch",
-    "lineNumber": 204,
+    "lineNumber": 247,
     "return": {
       "nullable": null,
       "types": [
@@ -1307,7 +1411,7 @@
     "params": []
   },
   {
-    "__docId__": 83,
+    "__docId__": 86,
     "kind": "method",
     "name": "adjust",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1316,12 +1420,12 @@
     "static": false,
     "longname": "src/Timestamp.js~Timestamp#adjust",
     "access": "public",
-    "description": "Method to adjust the timestamp.  The duration can be specified as a string containing\none or more items to adjust in either singular or plural form, e.g. `\"1 year, 1 month\"`,\n`\"2 years 2 months\"`, etc. Or it can be specified as an object: `{ year: 1, month: 1 }`,\n`{ years: 2, months: 2 }`, etc.",
+    "description": "Method to adjust the timestamp.  The duration can be specified as a string containing\none or more items to adjust in either singular or plural form, e.g. `\"1 year, 1 month\"`,\n`\"2 years 2 months\"`, etc. Or it can be specified as an object: `{ year: 1, month: 1 }`,\n`{ years: 2, months: 2 }`, etc.  Any overflow or underflow will be corrected by the\n{@link correct()} method.",
     "examples": [
       "ts.adjust(\"1 year 2 months 3 hours\")",
       "ts.adjust({ year: 1, months: 2, hours: 3 })"
     ],
-    "lineNumber": 218,
+    "lineNumber": 262,
     "params": [
       {
         "nullable": null,
@@ -1342,7 +1446,26 @@
     }
   },
   {
-    "__docId__": 84,
+    "__docId__": 87,
+    "kind": "method",
+    "name": "correct",
+    "memberof": "src/Timestamp.js~Timestamp",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/Timestamp.js~Timestamp#correct",
+    "access": "public",
+    "description": "Method to correct any underflow or overflow in the timestamp.  For example, if the\nmonth is set to 13 then it will be set to 1 and the year will be incremented.",
+    "lineNumber": 286,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 88,
     "kind": "method",
     "name": "compare",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1352,7 +1475,7 @@
     "longname": "src/Timestamp.js~Timestamp#compare",
     "access": "public",
     "description": "Method to compare the timestamp to another.  The arguments can be any that are accepted\nby the constructor.\none or more items to adjust in either singular or plural form, e.g. `\"1 year, 1 month\"`,\n`\"2 years 2 months\"`, etc. Or it can be specified as an object: `{ year: 1, month: 1 }`,\n`{ years: 2, months: 2 }`, etc.",
-    "lineNumber": 309,
+    "lineNumber": 361,
     "params": [
       {
         "nullable": null,
@@ -1375,7 +1498,7 @@
     }
   },
   {
-    "__docId__": 85,
+    "__docId__": 89,
     "kind": "method",
     "name": "equal",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1385,7 +1508,7 @@
     "longname": "src/Timestamp.js~Timestamp#equal",
     "access": "public",
     "description": "Method to compare one timestamp to another for equality",
-    "lineNumber": 336,
+    "lineNumber": 388,
     "params": [
       {
         "nullable": null,
@@ -1408,7 +1531,7 @@
     }
   },
   {
-    "__docId__": 86,
+    "__docId__": 90,
     "kind": "method",
     "name": "before",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1418,7 +1541,7 @@
     "longname": "src/Timestamp.js~Timestamp#before",
     "access": "public",
     "description": "Method to test for the timestamp coming before another timestamp",
-    "lineNumber": 344,
+    "lineNumber": 396,
     "params": [
       {
         "nullable": null,
@@ -1441,7 +1564,7 @@
     }
   },
   {
-    "__docId__": 87,
+    "__docId__": 91,
     "kind": "method",
     "name": "after",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1451,7 +1574,7 @@
     "longname": "src/Timestamp.js~Timestamp#after",
     "access": "public",
     "description": "Method to test for the timestamp coming after another timestamp",
-    "lineNumber": 352,
+    "lineNumber": 404,
     "params": [
       {
         "nullable": null,
@@ -1474,7 +1597,7 @@
     }
   },
   {
-    "__docId__": 88,
+    "__docId__": 92,
     "kind": "method",
     "name": "notBefore",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1484,7 +1607,7 @@
     "longname": "src/Timestamp.js~Timestamp#notBefore",
     "access": "public",
     "description": "Method to test for the timestamp being equal to or coming after another timestamp",
-    "lineNumber": 360,
+    "lineNumber": 412,
     "params": [
       {
         "nullable": null,
@@ -1507,7 +1630,7 @@
     }
   },
   {
-    "__docId__": 89,
+    "__docId__": 93,
     "kind": "method",
     "name": "notAfter",
     "memberof": "src/Timestamp.js~Timestamp",
@@ -1517,7 +1640,7 @@
     "longname": "src/Timestamp.js~Timestamp#notAfter",
     "access": "public",
     "description": "Method to test for the timestamp being equal to or coming before another timestamp",
-    "lineNumber": 368,
+    "lineNumber": 420,
     "params": [
       {
         "nullable": null,
@@ -1540,7 +1663,7 @@
     }
   },
   {
-    "__docId__": 90,
+    "__docId__": 94,
     "kind": "function",
     "name": "isTimestamp",
     "memberof": "src/Timestamp.js",
@@ -1553,7 +1676,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{isTimestamp}",
     "description": "Function to determine is a string is a valid timestamp.",
-    "lineNumber": 378,
+    "lineNumber": 430,
     "params": [
       {
         "nullable": null,
@@ -1576,7 +1699,7 @@
     }
   },
   {
-    "__docId__": 91,
+    "__docId__": 95,
     "kind": "function",
     "name": "splitTimestamp",
     "memberof": "src/Timestamp.js",
@@ -1589,7 +1712,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{splitTimestamp}",
     "description": "Function to split a timestamp into its constituent parts",
-    "lineNumber": 386,
+    "lineNumber": 438,
     "params": [
       {
         "nullable": null,
@@ -1612,7 +1735,7 @@
     }
   },
   {
-    "__docId__": 92,
+    "__docId__": 96,
     "kind": "function",
     "name": "isDate",
     "memberof": "src/Timestamp.js",
@@ -1625,7 +1748,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{isDate}",
     "description": "Function to determine is a valid is a `Date` object",
-    "lineNumber": 405,
+    "lineNumber": 457,
     "params": [
       {
         "nullable": null,
@@ -1648,7 +1771,7 @@
     }
   },
   {
-    "__docId__": 93,
+    "__docId__": 97,
     "kind": "function",
     "name": "unpackNow",
     "memberof": "src/Timestamp.js",
@@ -1661,7 +1784,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{unpackNow}",
     "description": "Function to return an object containing the constituent timestamp parts for the current time.",
-    "lineNumber": 412,
+    "lineNumber": 464,
     "return": {
       "nullable": null,
       "types": [
@@ -1673,7 +1796,7 @@
     "params": []
   },
   {
-    "__docId__": 94,
+    "__docId__": 98,
     "kind": "function",
     "name": "parseDate",
     "memberof": "src/Timestamp.js",
@@ -1686,7 +1809,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{parseDate}",
     "description": "Function to return an object containing the constituent timestamp parts for a date/time.",
-    "lineNumber": 420,
+    "lineNumber": 472,
     "params": [
       {
         "nullable": null,
@@ -1709,7 +1832,7 @@
     }
   },
   {
-    "__docId__": 95,
+    "__docId__": 99,
     "kind": "function",
     "name": "unpackDate",
     "memberof": "src/Timestamp.js",
@@ -1722,7 +1845,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{unpackDate}",
     "description": "Function to return an object containing the constituent timestamp parts for a `Date` object",
-    "lineNumber": 428,
+    "lineNumber": 480,
     "params": [
       {
         "nullable": null,
@@ -1745,7 +1868,7 @@
     }
   },
   {
-    "__docId__": 96,
+    "__docId__": 100,
     "kind": "function",
     "name": "parseDuration",
     "memberof": "src/Timestamp.js",
@@ -1758,7 +1881,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{parseDuration}",
     "description": "Function to parse a duration string, e.g. `1 hour 3 minutes`.\nQuantities must be integers. Units can be singular (e.g. `hour`) or plural (e.g. `hours`).\nOther characters may appear between sections, e.g. `1 hour, 2 minutes and 3 seconds`.",
-    "lineNumber": 444,
+    "lineNumber": 496,
     "params": [
       {
         "nullable": null,
@@ -1781,7 +1904,7 @@
     }
   },
   {
-    "__docId__": 97,
+    "__docId__": 101,
     "kind": "function",
     "name": "singularDurations",
     "memberof": "src/Timestamp.js",
@@ -1794,7 +1917,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{singularDurations}",
     "description": "Function to convert an object containing any plural duration units (e.g. `hours`) to the singular counterpart (e.g. `hour`).",
-    "lineNumber": 461,
+    "lineNumber": 513,
     "params": [
       {
         "nullable": null,
@@ -1817,7 +1940,7 @@
     }
   },
   {
-    "__docId__": 98,
+    "__docId__": 102,
     "kind": "function",
     "name": "joinTimestamp",
     "memberof": "src/Timestamp.js",
@@ -1830,7 +1953,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{joinTimestamp}",
     "description": "Function to join the constituent parts of a time stamp into a string",
-    "lineNumber": 486,
+    "lineNumber": 538,
     "params": [
       {
         "nullable": null,
@@ -1959,7 +2082,7 @@
     }
   },
   {
-    "__docId__": 99,
+    "__docId__": 103,
     "kind": "function",
     "name": "joinDate",
     "memberof": "src/Timestamp.js",
@@ -1972,7 +2095,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{joinDate}",
     "description": "Function to join the constituent parts of a date",
-    "lineNumber": 507,
+    "lineNumber": 559,
     "params": [
       {
         "nullable": null,
@@ -2037,7 +2160,7 @@
     }
   },
   {
-    "__docId__": 100,
+    "__docId__": 104,
     "kind": "function",
     "name": "joinTime",
     "memberof": "src/Timestamp.js",
@@ -2050,7 +2173,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{joinTime}",
     "description": "Function to join the constituent parts of a time into a string",
-    "lineNumber": 523,
+    "lineNumber": 575,
     "params": [
       {
         "nullable": null,
@@ -2115,7 +2238,7 @@
     }
   },
   {
-    "__docId__": 101,
+    "__docId__": 105,
     "kind": "function",
     "name": "daysInMonth",
     "memberof": "src/Timestamp.js",
@@ -2128,7 +2251,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{daysInMonth}",
     "description": "Function to return the number of days in a month.",
-    "lineNumber": 537,
+    "lineNumber": 589,
     "params": [
       {
         "nullable": null,
@@ -2161,7 +2284,7 @@
     }
   },
   {
-    "__docId__": 102,
+    "__docId__": 106,
     "kind": "function",
     "name": "leapYear",
     "memberof": "src/Timestamp.js",
@@ -2174,7 +2297,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{leapYear}",
     "description": "Function to determine if a year is a leap year",
-    "lineNumber": 554,
+    "lineNumber": 606,
     "params": [
       {
         "nullable": null,
@@ -2197,7 +2320,7 @@
     }
   },
   {
-    "__docId__": 103,
+    "__docId__": 107,
     "kind": "function",
     "name": "timestamp",
     "memberof": "src/Timestamp.js",
@@ -2210,7 +2333,7 @@
     "importPath": "@abw/badger-timestamp",
     "importStyle": "{timestamp}",
     "description": "Function to create a new `Timestamp` object",
-    "lineNumber": 579,
+    "lineNumber": 631,
     "params": [
       {
         "nullable": null,
@@ -2291,7 +2414,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"@abw/badger-timestamp\",\n  \"version\": \"1.0.2\",\n  \"description\": \"Simple timestamp utility\",\n  \"type\": \"module\",\n  \"main\": \"dist/badger-timestamp.cjs\",\n  \"module\": \"dist/badger-timestamp.mjs\",\n  \"browser\": \"dist/badger-timestamp.umd.js\",\n  \"exports\": {\n    \".\": {\n      \"require\": \"./dist/badger-timestamp.cjs\",\n      \"import\": \"./dist/badger-timestamp.mjs\"\n    }\n  },\n  \"author\": \"Andy Wardley\",\n  \"license\": \"MIT\",\n  \"files\": [\n    \"dist\"\n  ],\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/abw/badger-timestamp.git\"\n  },\n  \"bugs\": {\n    \"url\": \"https://github.com/abw/badger-timestamp/issues\"\n  },\n  \"scripts\": {\n    \"build\": \"rollup -c\",\n    \"dev\": \"rollup -c -w\",\n    \"lint\": \"eslint 'src/**/*'\",\n    \"docs:build\": \"esdoc\",\n    \"docs:serve\": \"serve docs\",\n    \"test\": \"ava\",\n    \"pretest\": \"pnpm run build\"\n  },\n  \"keywords\": [\n    \"badger\",\n    \"timestamp\",\n    \"utility\",\n    \"ISO8601\"\n  ],\n  \"devDependencies\": {\n    \"@itsjamie/esdoc-cli\": \"^0.5.0\",\n    \"@itsjamie/esdoc-core\": \"^0.5.0\",\n    \"@itsjamie/esdoc-importpath-plugin\": \"^0.5.0\",\n    \"@itsjamie/esdoc-inject-style-plugin\": \"^0.5.0\",\n    \"@itsjamie/esdoc-standard-plugin\": \"^0.5.0\",\n    \"@rollup/plugin-commonjs\": \"^11.0.1\",\n    \"@rollup/plugin-node-resolve\": \"^7.1.3\",\n    \"ava\": \"^4.3.0\",\n    \"eslint\": \"^8.20.0\",\n    \"rollup\": \"^2\",\n    \"rollup-plugin-terser\": \"^7.0.2\"\n  },\n  \"dependencies\": {\n    \"@abw/badger-utils\": \"^1.0.3\"\n  }\n}\n",
+    "content": "{\n  \"name\": \"@abw/badger-timestamp\",\n  \"version\": \"1.0.3\",\n  \"description\": \"Simple timestamp utility\",\n  \"type\": \"module\",\n  \"main\": \"dist/badger-timestamp.cjs\",\n  \"module\": \"dist/badger-timestamp.mjs\",\n  \"browser\": \"dist/badger-timestamp.umd.js\",\n  \"exports\": {\n    \".\": {\n      \"require\": \"./dist/badger-timestamp.cjs\",\n      \"import\": \"./dist/badger-timestamp.mjs\"\n    }\n  },\n  \"author\": \"Andy Wardley\",\n  \"license\": \"MIT\",\n  \"files\": [\n    \"dist\"\n  ],\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/abw/badger-timestamp.git\"\n  },\n  \"bugs\": {\n    \"url\": \"https://github.com/abw/badger-timestamp/issues\"\n  },\n  \"scripts\": {\n    \"build\": \"rollup -c\",\n    \"dev\": \"rollup -c -w\",\n    \"lint\": \"eslint 'src/**/*'\",\n    \"docs:build\": \"esdoc\",\n    \"docs:serve\": \"serve docs\",\n    \"test\": \"ava\",\n    \"pretest\": \"pnpm run build\"\n  },\n  \"keywords\": [\n    \"badger\",\n    \"timestamp\",\n    \"utility\",\n    \"ISO8601\"\n  ],\n  \"devDependencies\": {\n    \"@itsjamie/esdoc-cli\": \"^0.5.0\",\n    \"@itsjamie/esdoc-core\": \"^0.5.0\",\n    \"@itsjamie/esdoc-importpath-plugin\": \"^0.5.0\",\n    \"@itsjamie/esdoc-inject-style-plugin\": \"^0.5.0\",\n    \"@itsjamie/esdoc-standard-plugin\": \"^0.5.0\",\n    \"@rollup/plugin-commonjs\": \"^11.0.1\",\n    \"@rollup/plugin-node-resolve\": \"^7.1.3\",\n    \"ava\": \"^4.3.0\",\n    \"eslint\": \"^8.20.0\",\n    \"rollup\": \"^2\",\n    \"rollup-plugin-terser\": \"^7.0.2\"\n  },\n  \"dependencies\": {\n    \"@abw/badger-utils\": \"^1.0.3\"\n  }\n}\n",
     "longname": "/Users/abw/js/badger-timestamp/package.json",
     "name": "package.json",
     "static": true,
@@ -2299,7 +2422,7 @@
   },
   {
     "kind": "manualIndex",
-    "content": "# badger-timestamp\n\n<img src=\"./images/badger2.svg\" width=\"300\"/>\n\nThis is the manual for the `badger-timestamp` Javascript module.\n\n* [Getting Started](manual/getting_started.html)\n* [Creating Timestamps](manual/creating_timestamps.html)\n* [Formatting Timestamps](manual/formatting_timestamps.html)\n* [Adjusting Timestamps](manual/adjusting_timestamps.html)\n* [Comparing Timestamps](manual/comparing_timestamps.html)\n* [Utility Function](manual/utility_functions.html)\n\n# Author\n[Andy Wardley](https://github.com/abw)\n",
+    "content": "# badger-timestamp\n\n<img src=\"./images/badger2.svg\" width=\"300\"/>\n\nThis is the manual for the `badger-timestamp` Javascript module.\n\n* [Getting Started](manual/getting_started.html)\n* [Creating Timestamps](manual/creating_timestamps.html)\n* [Timestamp Components](manual/timestamp_components.html)\n* [Formatting Timestamps](manual/formatting_timestamps.html)\n* [Adjusting Timestamps](manual/adjusting_timestamps.html)\n* [Comparing Timestamps](manual/comparing_timestamps.html)\n* [Utility Function](manual/utility_functions.html)\n\n# Author\n[Andy Wardley](https://github.com/abw)\n",
     "longname": "/Users/abw/js/badger-timestamp/manual/index.md",
     "name": "./manual/index.md",
     "static": true,
@@ -2317,7 +2440,15 @@
     "kind": "manual",
     "longname": "/Users/abw/js/badger-timestamp/manual/creating_timestamps.md",
     "name": "./manual/creating_timestamps.md",
-    "content": "# Creating Timestamps\n\n- [Valid Formats](#valid-formats)\n- [Now is the Time](#now-is-the-time)\n- [Copy Constructor](#copy-constructor)\n- [Date Constructor](#date-constructor)\n- [Javascript Epoch Time](#javascript-epoch-time)\n- [Unix Epoch Time](#unix-epoch-time)\n- [Component Object](#component-object)\n- [Configuration Options](#configuration-options)\n\n## Valid Formats\n\nThe module is reasonable flexible about what it considers to be a\nvalid timestamp string.\n\nFor example, you can use a space to separate the date and time.\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24');\n```\n\nOr you can use any other non-numerical characters as separators in the\ndate and/or time.\n\n```js\nconst ts = timestamp('2022/08/12 08.16.24');\n```\n\nThe only requirement is that the date should have:\n\n* 4 digits for the year\n* 1 or 2 digits for the month\n* 1 or 2 digits for the day\n\nAnd the time should have:\n\n* 1 or 2 digits for the hours (24 hour clock only)\n* 2 digits for the minutes\n* 2 digits for the seconds\n\nAnd non-numerical character can be used as separators in the date and time.\nUse either a space or the `T` character to separate the date and time.\n\nYou can also omit the time altogether if you just want to represent a date.\n\n```js\nconst date = timestamp('2022-08-12');\n```\n\nIf you don't mind taking a bit of a gamble then you can pass in a different\ntime string and hope that the implementation of the `Date.parse()` function\non the platform you're using can parse it.\n\n```js\nconst ts = timestamp('12 August 2022 09:01:02');\n```\n\n## Now is the Time\n\nIf you don't provide a timestamp string then it will default to the current\ndate and time.\n\n```js\nconst now = timestamp();\n```\n\n## Copy Constructor\n\nYou can create a timestamp by passing an existing timestamp object.\n\n```js\nconst now1 = timestamp();\nconst now2 = timestamp(now1);\n```\n\nYou can also use the `copy()` method to create a copy of a timestamp.\n\n```js\nconst now1 = timestamp();\nconst now2 = now1.copy();\n```\n\n## Date Constructor\n\nYou can create a timestamp by passing an existing [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) object.\n\n```js\nconst date = new Date('2022-08-12T09:05:12');\nconst ts   = timestamp(date);\n```\n\n## Javascript Epoch Time\n\nIn the land of Javascript, dates can be represented by the number\nof *milliseconds* since the Unix epoch of January 1st 1970.  This is\nthe value returned by the\n[getTime()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)\nmethod of the [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)\nobject.\n\nPass an integer number of milliseconds to the `timestamp()` function\nto use this value.\n\n```js\nconst date = new Date('2022-08-12T09:05:12');\nconst ms   = date.getTime();\nconst ts   = timestamp(ms);\n```\n\nOr, if being explicit is your thing, pass an object with the milliseconds\ndefined as the `ms` value.\n\n```js\nconst date = new Date('2022-08-12T09:05:12');\nconst ts   = timestamp({ ms: date.getTime() });\n```\n\n## Unix Epoch Time\n\nIn the land of Unix, they use *seconds* since the Unix epoch rather than\nmilliseconds.\n\nPass an object with a `unix` number of seconds into the `timestamp()` function\nto use this value.\n\n```js\nconst ts = timestamp({ unix: 123456789 });\n```\n\n## Component Object\n\nThe final way to create a timestamp is to pass an object containing\n`year`, `month`, `day`, and optionally, `hours`, `minutes` and `seconds`.\n\nNote that by convention, the date components are all singular (e.g. `year` not\n`years`) and the time components are all plural (e.g. `minutes` not `minute`).\nI don't know why we do this, but that's what we do.\n\nAlso note that the `month` ranges from 1 to 12, in keeping with the human convention,\nrather than 0 to 11 to pander to the computers.\n\n```js\nconst ts = timestamp({\n  year:    2022,\n  month:   8,\n  date:    12,\n  hours:   9,\n  minutes: 17,\n  seconds: 32\n});\n```\n\n## Configuration Options\n\nA second argument can be passed to the `timestamp()` function (or the `Timestamp` constructor)\nas an object containing configuration options.\n\nThese can include:\n\n* `joint` - (default: ' ') the value used to join date and time\n* `dateJoint` - (default: '-') the value used to join date elements\n* `timeJoint` - (default: ':') the value used to join time elements\n\nThese are used by the `date()`, `time()` and `stamp()` functions used to format\nthe timestamp, or parts of it, as strings.  They do not affect how the module\nparses timestamps.",
+    "content": "# Creating Timestamps\n\n- [Valid Formats](#valid-formats)\n- [Now is the Time](#now-is-the-time)\n- [Copy Constructor](#copy-constructor)\n- [Date Constructor](#date-constructor)\n- [Javascript Epoch Time](#javascript-epoch-time)\n- [Unix Epoch Time](#unix-epoch-time)\n- [Component Object](#component-object)\n- [Configuration Options](#configuration-options)\n\n## Valid Formats\n\nThe module is reasonable flexible about what it considers to be a\nvalid timestamp string.\n\nFor example, you can use a space to separate the date and time.\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24');\n```\n\nOr you can use any other non-numerical characters as separators in the\ndate and/or time.\n\n```js\nconst ts = timestamp('2022/08/12 08.16.24');\n```\n\nThe only requirement is that the date should have:\n\n* 4 digits for the year\n* 1 or 2 digits for the month\n* 1 or 2 digits for the day\n\nAnd the time should have:\n\n* 1 or 2 digits for the hours (24 hour clock only)\n* 2 digits for the minutes\n* 2 digits for the seconds\n\nAnd non-numerical character can be used as separators in the date and time.\nUse either a space or the `T` character to separate the date and time.\n\nYou can also omit the time altogether if you just want to represent a date.\n\n```js\nconst date = timestamp('2022-08-12');\n```\n\nIf you don't mind taking a bit of a gamble then you can pass in a different\ntime string and hope that the implementation of the `Date.parse()` function\non the platform you're using can parse it.\n\n```js\nconst ts = timestamp('12 August 2022 09:01:02');\n```\n\n## Now is the Time\n\nIf you don't provide a timestamp string then it will default to the current\ndate and time.\n\n```js\nconst now = timestamp();\n```\n\n## Copy Constructor\n\nYou can create a timestamp by passing an existing timestamp object.\n\n```js\nconst now1 = timestamp();\nconst now2 = timestamp(now1);\n```\n\nYou can also use the `copy()` method to create a copy of a timestamp.\n\n```js\nconst now1 = timestamp();\nconst now2 = now1.copy();\n```\n\n## Date Constructor\n\nYou can create a timestamp by passing an existing [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) object.\n\n```js\nconst date = new Date('2022-08-12T09:05:12');\nconst ts   = timestamp(date);\n```\n\n## Javascript Epoch Time\n\nIn the land of Javascript, dates can be represented by the number\nof *milliseconds* since the Unix epoch of January 1st 1970.  This is\nthe value returned by the\n[getTime()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)\nmethod of the [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)\nobject.\n\nPass an integer number of milliseconds to the `timestamp()` function\nto use this value.\n\n```js\nconst date = new Date('2022-08-12T09:05:12');\nconst ms   = date.getTime();\nconst ts   = timestamp(ms);\n```\n\nOr, if being explicit is your thing, pass an object with the milliseconds\ndefined as the `ms` value.\n\n```js\nconst date = new Date('2022-08-12T09:05:12');\nconst ts   = timestamp({ ms: date.getTime() });\n```\n\n## Unix Epoch Time\n\nIn the land of Unix, they use *seconds* since the Unix epoch rather than\nmilliseconds.\n\nPass an object with a `unix` number of seconds into the `timestamp()` function\nto use this value.\n\n```js\nconst ts = timestamp({ unix: 123456789 });\n```\n\n## Component Object\n\nThe final way to create a timestamp is to pass an object containing\n`year`, `month`, `day`, and optionally, `hours`, `minutes` and `seconds`.\n\nNote that by convention, the date components are all singular (e.g. `year` not\n`years`) and the time components are all plural (e.g. `minutes` not `minute`).\nI don't know why we do this, but that's what we do.\n\nAlso note that the `month` ranges from 1 to 12, in keeping with the human convention,\nrather than 0 to 11 to pander to the computers.\n\n```js\nconst ts = timestamp({\n  year:    2022,\n  month:   8,\n  date:    12,\n  hours:   9,\n  minutes: 17,\n  seconds: 32\n});\n```\n\n## Configuration Options\n\nA second argument can be passed to the `timestamp()` function (or the `Timestamp` constructor)\nas an object containing configuration options.\n\nThese can include:\n\n* `joint` - (default: ' ') the value used to join date and time\n* `dateJoint` - (default: '-') the value used to join date elements\n* `timeJoint` - (default: ':') the value used to join time elements\n* `locale` - (default: 'default') the locale for formatting dates and times\n\nThese are used by the `date()`, `time()` and `stamp()` functions used to format\nthe timestamp, or parts of it, as strings.  They do not affect how the module\nparses timestamps.",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "manual",
+    "longname": "/Users/abw/js/badger-timestamp/manual/timestamp_components.md",
+    "name": "./manual/timestamp_components.md",
+    "content": "# Timestamp Components\n\n- [year()](#year)\n- [month()](#month)\n- [day()](#day)\n- [hours()](#day)\n- [minutes()](#minutes)\n- [seconds()](#seconds)\n- [dateObject()](#dateObject)\n- [epochSeconds()](#epochSeconds)\n- [epochMilliseconds()](#epochMilliseconds)\n\n## year()\n\nUse the `year()` method to get or set the year.\n\n```js\nconst ts = timestamp('2022-08-15 08:13:12');\nts.year();      // 2022\nts.year(2023);  // 2023\nts.year();      // 2023\nts.date();      // 2023-08-15\n```\n\n## month()\n\nUse the `month()` method to get or set the month.\nIt should be an integer from 1 (January) to 12 (December).\n\n```js\nconst ts = timestamp('2022-08-15 08:13:12');\nts.month();     // 8\nts.month(9);    // 9\nts.month();     // 9\nts.date();      // 2022-09-15\n```\n\nIf you set the month to a value outside the range from 1 to 12 then\nthe date will be adjusted accordingly.  For example, setting the\nmonth to 13 will cause the year to be incremented and the month will\nbe set to 1 (January).\n\n```js\nconst ts = timestamp('2022-08-15 08:13:12');\nts.month(13);   // 1\nts.month();     // 1\nts.date();      // 2023-01-15\n```\n\n## day()\n\nUse the `day()` method to get or set the day.\nIt should be an integer from 1 to 31.\n\n```js\nconst ts = timestamp('2022-08-15 08:13:12');\nts.month();     // 8\nts.month(9);    // 9\nts.month();     // 9\nts.date();      // 2022-09-15\n```\n\nIf you set the day to a value less than 1 or greater than the\nnumber of days in the month, then the date will be adjusted\naccordingly.  For example, setting the day to 31 in June\nwill result in the date being set to 1st July.\n\n```js\nconst ts = timestamp('2022-06-15');\nts.day(31);     // 1\nts.day();       // 1\nts.date();      // 2022-07-01\n```\n\n## hours()\n\nUse the `hours()` method to get or set the hours.\nIt should be an integer from 0 to 23.\n\n```js\nconst ts = timestamp('2022-08-15 08:13:12');\nts.hours();     // 8\nts.hours(9);    // 9\nts.hours();     // 9\nts.time();      // 09:13:12\n```\n\nIf you set the hours to a value outside the range 0 to 23 then\nthen the time and date will be adjusted accordingly.  For example,\nsetting the hours to 25 on 30th June will result in the date being\nset to 1st July and the hours to 1.\n\n```js\nconst ts = timestamp('2022-06-30 13:14:15');\nts.hours(25);   // 1\nts.hours();     // 1\nts.stamp();     // 2022-07-01 01:14:15\n```\n\n## minutes()\n\nUse the `minutes()` method to get or set the minutes.\nIt should be an integer from 0 to 59.\n\n```js\nconst ts = timestamp('2022-08-15 08:13:12');\nts.minutes();   // 13\nts.minutes(14); // 14\nts.minutes();   // 14\nts.time();      // 08:14:12\n```\n\nIf you set the minutes to a value outside the range 0 to 59 then\nthen the time and date will be adjusted accordingly.  For example,\nsetting the minutes to 65 when the hour is 23 on 30th June will\nresult in the date being set to 1st July and the hours to 0.\n\n```js\nconst ts = timestamp('2022-06-30 23:14:15');\nts.minutes(65); // 5\nts.hours();     // 0\nts.stamp();     // 2022-07-01 00:05:15\n```\n\n## seconds()\n\nUse the `seconds()` method to get or set the seconds.\nIt should be an integer from 0 to 59.\n\n```js\nconst ts = timestamp('2022-08-15 08:13:12');\nts.seconds();   // 12\nts.seconds(22); // 22\nts.seconds();   // 14\nts.time();      // 08:13:22\n```\n\nIf you set the seconds to a value outside the range 0 to 59 then\nthen the time and date will be adjusted accordingly.  For example,\nsetting the seconds to 65 at 23:59:00 on 30th June will\nresult in the date being set to 1st July and the time to 00:00:05.\n\n```js\nconst ts = timestamp('2022-06-30 23:59:00');\nts.seconds(65); // 5\nts.seconds();   // 5\nts.stamp();     // 2022-07-01 00:01:05\n```\n\n## dateObject()\n\nThis method returns the timestamp as a Javascript [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) object.\n\n## epochSeconds()\n\nThis method returns the number of seconds since the Unix Epoch at 00:00:00 on January 1st 1970.\n\n## epochMilliseconds()\n\nThis method returns the number of milliseconds since the Unix Epoch at 00:00:00 on January 1st 1970.",
     "static": true,
     "access": "public"
   },
@@ -2325,7 +2456,7 @@
     "kind": "manual",
     "longname": "/Users/abw/js/badger-timestamp/manual/formatting_timestamps.md",
     "name": "./manual/formatting_timestamps.md",
-    "content": "# Formatting Timestamps\n\n- [Generating a Timestamp](#generating-a-timestamp)\n- [Formatting the Date](#formatting-the-date)\n- [Formatting the Time](#formatting-the-time)\n\n## Generating a Timestamp\n\nCall the `stamp()` method to regenerate the timestamp as a string.\n\n```js\nconst ts1 = timestamp('2022-08-12 08:16:24');\nconst ts2 = ts1.stamp();    // 2022-08-12 08:16:24\n```\n\nThe configuration options `joint`, `dateJoint` and `timeJoint` can be used\nto specify what strings are used to join the date and time (`joint`),\ncomponents of the date (`dateJoint`) and components of the time (`timeJoint`).\n\nThese can be passed in as configuration options when you create the timestamp.\n\n```js\nconst ts1 = timestamp('2022-08-12 08:16:24', { dateJoint: '/', joint: 'T' });\nconst ts2 = ts1.stamp();    // 2022/08/12T08:16:24\n```\n\nOr as options passed to the `stamp()` method.\n\n```js\nconst ts1 = timestamp('2022-08-12 08:16:24');\nconst ts2 = ts1.stamp({ dateJoint: '/', joint: 'T' });    // 2022/08/12T08:16:24\n```\n\n## Formatting the Date\n\nCall the `date()` method to format the date as a string.\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24');\nconst dt = ts.date();    // 2022-08-12\n```\n\nThe method will use the `dateJoint` string to join components of the date.\nThis can be specified as a configuration option when creating the timestamp:\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24', { dateJoint: '/' });\nconst dt = ts.date();    // 2022/08/12\n```\n\nOr passed as an argument to the `date()` method:\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24');\nconst dt = ts.date('/');    // 2022/08/12\n```\n\n## Formatting the Time\n\nCall the `time()` method to format the time as a string.\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24');\nconst tm = ts.time();    // 08:16:24\n```\n\nThe method will use the `timeJoint` string to join components of the time.\nThis can be specified as a configuration option when creating the timestamp:\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24', { timeJoint: '::' });\nconst tm = ts.time();    // 08::16::24\n```\n\nOr passed as an argument to the `time()` method:\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24');\nconst tm = ts.time('::');    // 08::16::24\n```\n",
+    "content": "# Formatting Timestamps\n\n- [Generating a Timestamp](#generating-a-timestamp)\n- [Formatting the Date](#formatting-the-date)\n- [Formatting the Time](#formatting-the-time)\n- [Weekday Name](#weekday-name)\n- [Month Name](#month-name)\n\n## Generating a Timestamp\n\nCall the `stamp()` method to regenerate the timestamp as a string.\n\n```js\nconst ts1 = timestamp('2022-08-12 08:16:24');\nconst ts2 = ts1.stamp();    // 2022-08-12 08:16:24\n```\n\nThe configuration options `joint`, `dateJoint` and `timeJoint` can be used\nto specify what strings are used to join the date and time (`joint`),\ncomponents of the date (`dateJoint`) and components of the time (`timeJoint`).\n\nThese can be passed in as configuration options when you create the timestamp.\n\n```js\nconst ts1 = timestamp('2022-08-12 08:16:24', { dateJoint: '/', joint: 'T' });\nconst ts2 = ts1.stamp();    // 2022/08/12T08:16:24\n```\n\nOr as options passed to the `stamp()` method.\n\n```js\nconst ts1 = timestamp('2022-08-12 08:16:24');\nconst ts2 = ts1.stamp({ dateJoint: '/', joint: 'T' });    // 2022/08/12T08:16:24\n```\n\n## Formatting the Date\n\nCall the `date()` method to format the date as a string.\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24');\nconst dt = ts.date();    // 2022-08-12\n```\n\nThe method will use the `dateJoint` string to join components of the date.\nThis can be specified as a configuration option when creating the timestamp:\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24', { dateJoint: '/' });\nconst dt = ts.date();    // 2022/08/12\n```\n\nOr passed as an argument to the `date()` method:\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24');\nconst dt = ts.date('/');    // 2022/08/12\n```\n\n## Formatting the Time\n\nCall the `time()` method to format the time as a string.\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24');\nconst tm = ts.time();    // 08:16:24\n```\n\nThe method will use the `timeJoint` string to join components of the time.\nThis can be specified as a configuration option when creating the timestamp:\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24', { timeJoint: '::' });\nconst tm = ts.time();    // 08::16::24\n```\n\nOr passed as an argument to the `time()` method:\n\n```js\nconst ts = timestamp('2022-08-12 08:16:24');\nconst tm = ts.time('::');    // 08::16::24\n```\n\n## Weekday Name\n\nThe `weekday()` method returns the day of the week as an integer from 0 (Sunday)\nto 6 (Saturday).\n\nThe `weekdayName()` method returns the day of the week as a string.\n\n```js\ntimestamp('2022-08-15').weekdayName();  // Monday\n```\n\nAn optional argument can be provided as a format.  This defaults to `long` but can\nbe set to `short` for a 3 letter abbreviation of the name.\n\n```js\ntimestamp('2022-08-15').weekdayName('short');  // Mon\n```\n\nThe method will use the current local which defaults to `default` and will use\nthe current locale for your browser or machine.  You can specify a locale as a\nconfiguration option for the timestamp.\n\n```js\nconst ts = timestamp('2022-08-15', { locale: 'fr-FR' })\nts.weekdayName();         // lundi\nts.weekdayName('short');  // lun.\n```\n\n## Month Name\n\nThe `monthName()` method returns the day of the month as a string.\n\n```js\ntimestamp('2022-09-15').monthName();  // September\n```\n\nAn optional argument can be provided as a format.  This defaults to `long` but can\nbe set to `short` for a 3 letter abbreviation of the month.\n\n```js\ntimestamp('2022-09-15').monthName('short');  // Sep\n```\n\nThe method will use the current local which defaults to `default` and will use\nthe current locale for your browser or machine.  You can specify a locale as a\nconfiguration option for the timestamp.\n\n```js\nconst ts = timestamp('2022-09-15', { locale: 'fr-FR' })\nts.monthName();         // septembre\nts.monthName('short');  // sep\n```",
     "static": true,
     "access": "public"
   },

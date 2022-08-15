@@ -414,6 +414,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/timestamp.js~timestamp#correct",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-correct",
+    "src/Timestamp.js~Timestamp#correct",
+    "method"
+  ],
+  [
     "src/timestamp.js~timestamp#date",
     "class/src/Timestamp.js~Timestamp.html#instance-method-date",
     "src/Timestamp.js~Timestamp#date",
@@ -438,6 +444,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/timestamp.js~timestamp#epochmilliseconds",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-epochMilliseconds",
+    "src/Timestamp.js~Timestamp#epochMilliseconds",
+    "method"
+  ],
+  [
     "src/timestamp.js~timestamp#epochseconds",
     "class/src/Timestamp.js~Timestamp.html#instance-method-epochSeconds",
     "src/Timestamp.js~Timestamp#epochSeconds",
@@ -456,12 +468,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/timestamp.js~timestamp#milliseconds",
-    "class/src/Timestamp.js~Timestamp.html#instance-method-milliseconds",
-    "src/Timestamp.js~Timestamp#milliseconds",
-    "method"
-  ],
-  [
     "src/timestamp.js~timestamp#minutes",
     "class/src/Timestamp.js~Timestamp.html#instance-method-minutes",
     "src/Timestamp.js~Timestamp#minutes",
@@ -471,6 +477,12 @@ window.esdocSearchIndex = [
     "src/timestamp.js~timestamp#month",
     "class/src/Timestamp.js~Timestamp.html#instance-method-month",
     "src/Timestamp.js~Timestamp#month",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#monthname",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-monthName",
+    "src/Timestamp.js~Timestamp#monthName",
     "method"
   ],
   [
@@ -513,6 +525,18 @@ window.esdocSearchIndex = [
     "src/timestamp.js~timestamp#time",
     "class/src/Timestamp.js~Timestamp.html#instance-method-time",
     "src/Timestamp.js~Timestamp#time",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#weekday",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-weekday",
+    "src/Timestamp.js~Timestamp#weekday",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#weekdayname",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-weekdayName",
+    "src/Timestamp.js~Timestamp#weekdayName",
     "method"
   ],
   [

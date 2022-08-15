@@ -54,10 +54,27 @@
 <div data-ice="manual">
     <ul class="manual-toc">
       
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html" data-ice="link">Timestamp Components</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#year--" data-ice="link">year()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#month--" data-ice="link">month()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#day--" data-ice="link">day()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#hours--" data-ice="link">hours()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#minutes--" data-ice="link">minutes()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#seconds--" data-ice="link">seconds()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#dateobject--" data-ice="link">dateObject()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#epochseconds--" data-ice="link">epochSeconds()</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/timestamp_components.html"><a href="manual/timestamp_components.html#epochmilliseconds--" data-ice="link">epochMilliseconds()</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
     <li data-ice="manualNav" class="indent-h1" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html" data-ice="link">Formatting Timestamps</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#generating-a-timestamp" data-ice="link">Generating a Timestamp</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-the-date" data-ice="link">Formatting the Date</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-the-time" data-ice="link">Formatting the Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#weekday-name" data-ice="link">Weekday Name</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#month-name" data-ice="link">Month Name</a></li>
 </ul>
   </div>
 <div data-ice="manual">
@@ -194,6 +211,7 @@ as an object containing configuration options.</p>
 <li><code>joint</code> - (default: ' ') the value used to join date and time</li>
 <li><code>dateJoint</code> - (default: '-') the value used to join date elements</li>
 <li><code>timeJoint</code> - (default: ':') the value used to join time elements</li>
+<li><code>locale</code> - (default: 'default') the locale for formatting dates and times</li>
 </ul>
 <p>These are used by the <code>date()</code>, <code>time()</code> and <code>stamp()</code> functions used to format
 the timestamp, or parts of it, as strings.  They do not affect how the module

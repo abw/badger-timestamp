@@ -1,11 +1,11 @@
 {
-  "coverage": "78.72%",
-  "expectCount": 47,
-  "actualCount": 37,
+  "coverage": "80.39%",
+  "expectCount": 51,
+  "actualCount": 41,
   "files": {
     "src/Timestamp.js": {
-      "expectCount": 47,
-      "actualCount": 37,
+      "expectCount": 51,
+      "actualCount": 41,
       "undocumentLines": [
         6,
         7,
@@ -14,9 +14,9 @@
         10,
         11,
         12,
-        38,
         40,
-        46
+        42,
+        48
       ]
     }
   }
