@@ -161,6 +161,7 @@ These can include:
 * `joint` - (default: ' ') the value used to join date and time
 * `dateJoint` - (default: '-') the value used to join date elements
 * `timeJoint` - (default: ':') the value used to join time elements
+* `locale` - (default: 'default') the locale for formatting dates and times
 
 These are used by the `date()`, `time()` and `stamp()` functions used to format
 the timestamp, or parts of it, as strings.  They do not affect how the module

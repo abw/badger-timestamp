@@ -18,6 +18,7 @@ const defaults = {
   joint:     ' ',
   dateJoint: '-',
   timeJoint: ':',
+  locale:    'default',
 }
 
 /**
@@ -32,6 +33,7 @@ export class Timestamp {
    * @param {String} [options.joint=' '] - joining character between date and time parts
    * @param {String} [options.dateJoint='-'] - joining character for date segments
    * @param {String} [options.timeJoint=':'] - joining character for time segments
+   * @param {String} [options.locale='default'] - locale for formatting dates and times
    */
   constructor(ts, options) {
     const props = { ...defaults, ...options };
@@ -109,6 +111,7 @@ export class Timestamp {
   month(month) {
     if (hasValue(month)) {
       this.parts.month = month;
+      this.correct();
     }
     return this.parts.month;
   }
@@ -120,6 +123,7 @@ export class Timestamp {
   day(day) {
     if (hasValue(day)) {
       this.parts.day = day;
+      this.correct();
     }
     return this.parts.day;
   }
@@ -131,6 +135,7 @@ export class Timestamp {
   hours(hours) {
     if (hasValue(hours)) {
       this.parts.hours = hours;
+      this.correct();
     }
     return this.parts.hours;
   }
@@ -142,6 +147,7 @@ export class Timestamp {
   minutes(minutes) {
     if (hasValue(minutes)) {
       this.parts.minutes = minutes;
+      this.correct();
     }
     return this.parts.minutes;
   }
@@ -153,8 +159,45 @@ export class Timestamp {
   seconds(seconds) {
     if (hasValue(seconds)) {
       this.parts.seconds = seconds;
+      this.correct();
     }
     return this.parts.seconds;
+  }
+  /**
+   * Method to return the month name.
+   * @param {String} [format='long'] - optional format: `full`, `long`, `medium`, `short`
+   * @return {String} - the month name
+   */
+  monthName(format='long') {
+    const mon = this.dateObject().toLocaleString(
+      this.props.locale,
+      { month: format }
+    );
+    // for some insane reason which I can't fathom, the short format
+    // returns 3 letter words for every month (Jan, Feb, Mar, etc),
+    // except September which is returned as "Sept". To avoid this
+    // inconsistency I'm shortening it to "Sep".
+    return format === 'short'
+      ? mon.slice(0, 3)
+      : mon;
+  }
+  /**
+   * Method to return the weekday name as a number from 0 (Sunday) to 6 (Saturday)
+   * @return {Integer} - the weekday number
+   */
+  weekday() {
+    return this.dateObject().getDay()
+  }
+  /**
+   * Method to return the weekday name.
+   * @param {String} [format='long'] - optional format: `full`, `long`, `medium`, `short`
+   * @return {String} - the weekday name
+   */
+  weekdayName(format='long') {
+    return this.dateObject().toLocaleString(
+      this.props.locale,
+      { weekday: format }
+    );
   }
   /**
    * Method to return a formatted date string in the form `YYYY-MM-DD`.
@@ -194,7 +237,7 @@ export class Timestamp {
    * Method to return the number of millseconds since the Unix epoch
    * @return {Integer} - the number of milliseconds
    */
-  milliseconds() {
+  epochMilliseconds() {
     return this.dateObject().getTime();
   }
   /**
@@ -208,7 +251,8 @@ export class Timestamp {
    * Method to adjust the timestamp.  The duration can be specified as a string containing
    * one or more items to adjust in either singular or plural form, e.g. `"1 year, 1 month"`,
    * `"2 years 2 months"`, etc. Or it can be specified as an object: `{ year: 1, month: 1 }`,
-   * `{ years: 2, months: 2 }`, etc.
+   * `{ years: 2, months: 2 }`, etc.  Any overflow or underflow will be corrected by the
+   * {@link correct()} method.
    * @param {String|Object} duration - a string or object of adjustments
    * @example
    * ts.adjust("1 year 2 months 3 hours")
@@ -233,6 +277,14 @@ export class Timestamp {
         }
       }
     );
+    return this.correct();
+  }
+  /**
+   * Method to correct any underflow or overflow in the timestamp.  For example, if the
+   * month is set to 13 then it will be set to 1 and the year will be incremented.
+   */
+  correct() {
+    let p = this.parts;
 
     // time underflow
     while (p.seconds < 0) {

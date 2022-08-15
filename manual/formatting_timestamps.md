@@ -3,6 +3,8 @@
 - [Generating a Timestamp](#generating-a-timestamp)
 - [Formatting the Date](#formatting-the-date)
 - [Formatting the Time](#formatting-the-time)
+- [Weekday Name](#weekday-name)
+- [Month Name](#month-name)
 
 ## Generating a Timestamp
 
@@ -77,4 +79,57 @@ Or passed as an argument to the `time()` method:
 ```js
 const ts = timestamp('2022-08-12 08:16:24');
 const tm = ts.time('::');    // 08::16::24
+```
+
+## Weekday Name
+
+The `weekday()` method returns the day of the week as an integer from 0 (Sunday)
+to 6 (Saturday).
+
+The `weekdayName()` method returns the day of the week as a string.
+
+```js
+timestamp('2022-08-15').weekdayName();  // Monday
+```
+
+An optional argument can be provided as a format.  This defaults to `long` but can
+be set to `short` for a 3 letter abbreviation of the name.
+
+```js
+timestamp('2022-08-15').weekdayName('short');  // Mon
+```
+
+The method will use the current local which defaults to `default` and will use
+the current locale for your browser or machine.  You can specify a locale as a
+configuration option for the timestamp.
+
+```js
+const ts = timestamp('2022-08-15', { locale: 'fr-FR' })
+ts.weekdayName();         // lundi
+ts.weekdayName('short');  // lun.
+```
+
+## Month Name
+
+The `monthName()` method returns the day of the month as a string.
+
+```js
+timestamp('2022-09-15').monthName();  // September
+```
+
+An optional argument can be provided as a format.  This defaults to `long` but can
+be set to `short` for a 3 letter abbreviation of the month.
+
+```js
+timestamp('2022-09-15').monthName('short');  // Sep
+```
+
+The method will use the current local which defaults to `default` and will use
+the current locale for your browser or machine.  You can specify a locale as a
+configuration option for the timestamp.
+
+```js
+const ts = timestamp('2022-09-15', { locale: 'fr-FR' })
+ts.monthName();         // septembre
+ts.monthName('short');  // sep
 ```

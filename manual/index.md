@@ -6,6 +6,7 @@ This is the manual for the `badger-timestamp` Javascript module.
 
 * [Getting Started](manual/getting_started.html)
 * [Creating Timestamps](manual/creating_timestamps.html)
+* [Timestamp Components](manual/timestamp_components.html)
 * [Formatting Timestamps](manual/formatting_timestamps.html)
 * [Adjusting Timestamps](manual/adjusting_timestamps.html)
 * [Comparing Timestamps](manual/comparing_timestamps.html)
