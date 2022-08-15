@@ -77,10 +77,10 @@ test(
   }
 );
 test(
-  'milliseconds() method',
+  'epochMilliseconds() method',
   t => {
     const stamp = timestamp('1970-01-02');
-    t.is( stamp.milliseconds(), 86400000 );
+    t.is( stamp.epochMilliseconds(), 86400000 );
   }
 );
 test(

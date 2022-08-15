@@ -245,7 +245,7 @@ export class Timestamp {
    * @return {Integer} - the number of seconds
    */
   epochSeconds() {
-    return Math.floor(this.milliseconds() / 1000);
+    return Math.floor(this.epochMilliseconds() / 1000);
   }
   /**
    * Method to adjust the timestamp.  The duration can be specified as a string containing
