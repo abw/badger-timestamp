@@ -249,7 +249,7 @@ export class Timestamp {
 
   /**
    * Method to return the timestamp in kebab-case `YYYY-MM-DD-hh-mm-ss` regardless of any options.
-   * @return {String} - formatted date string
+   * @return {String} - formatted date/time string
    */
   kebab() {
     return joinTimestamp(
@@ -260,7 +260,7 @@ export class Timestamp {
 
   /**
    * Method to return the date and time in kebab-case `YYYYMMDD-hhmmss` regardless of any options.
-   * @return {String} - formatted date string
+   * @return {String} - formatted date/time string
    */
   kebabDateTime() {
     return joinTimestamp(
@@ -278,8 +278,8 @@ export class Timestamp {
   }
 
   /**
-   * Method to return the date in kebab-case `YYYY-MM-DD` regardless of any options.
-   * @return {String} - formatted date string
+   * Method to return the time in kebab-case `hh-mm-ss` regardless of any options.
+   * @return {String} - formatted time string
    */
   kebabTime() {
     return joinTime(this.parts, '-')
@@ -287,12 +287,23 @@ export class Timestamp {
 
   /**
    * Method to return the timestamp in snake-case `YYYY_MM_DD_hh_mm_ss` regardless of any options.
-   * @return {String} - formatted date string
+   * @return {String} - formatted date/time string
    */
   snake() {
     return joinTimestamp(
       this.parts,
       { joint: '_', dateJoint: '_', timeJoint: '_' }
+    )
+  }
+
+  /**
+   * Method to return the date and time in snake-case `YYYYMMDD_hhmmss` regardless of any options.
+   * @return {String} - formatted date/time string
+   */
+  snakeDateTime() {
+    return joinTimestamp(
+      this.parts,
+      { joint: '_', dateJoint: '', timeJoint: '' }
     )
   }
 
@@ -305,22 +316,38 @@ export class Timestamp {
   }
 
   /**
-   * Method to return the date in snake-case `YYYY_MM_DD` regardless of any options.
-   * @return {String} - formatted date string
+   * Method to return the time in snake-case `hh_mm_ss` regardless of any options.
+   * @return {String} - formatted time string
    */
   snakeTime() {
     return joinTime(this.parts, '_')
   }
 
   /**
-   * Method to return the date and time in snake-case `YYYYMMDD_hhmmss` regardless of any options.
-   * @return {String} - formatted date string
+   * Method to return the timestamp squished together as `YYYYMMDDhhmmss` regardless of any options.
+   * @return {String} - formatted date/time string
    */
-  snakeDateTime() {
+  squish() {
     return joinTimestamp(
       this.parts,
-      { joint: '_', dateJoint: '', timeJoint: '' }
+      { joint: '', dateJoint: '', timeJoint: '' }
     )
+  }
+
+  /**
+   * Method to return the date squished together as `YYYYMMDD` regardless of any options.
+   * @return {String} - formatted date string
+   */
+  squishDate() {
+    return joinDate(this.parts, '')
+  }
+
+  /**
+   * Method to return the time squished together as `hhmmss` regardless of any options.
+   * @return {String} - formatted time string
+   */
+  squishTime() {
+    return joinTime(this.parts, '')
   }
 
   /**
