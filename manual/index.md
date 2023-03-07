@@ -10,7 +10,7 @@ This is the manual for the `badger-timestamp` Javascript module.
 * [Formatting Timestamps](manual/formatting_timestamps.html)
 * [Adjusting Timestamps](manual/adjusting_timestamps.html)
 * [Comparing Timestamps](manual/comparing_timestamps.html)
-* [Utility Function](manual/utility_functions.html)
+* [Utility Functions](manual/utility_functions.html)
 
 # Author
 [Andy Wardley](https://github.com/abw)
