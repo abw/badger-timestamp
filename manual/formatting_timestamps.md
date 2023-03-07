@@ -3,6 +3,7 @@
 - [Generating a Timestamp](#generating-a-timestamp)
 - [Formatting the Date](#formatting-the-date)
 - [Formatting the Time](#formatting-the-time)
+- [Formatting Shortcuts](#formatting-shortcuts)
 - [Weekday Name](#weekday-name)
 - [Month Name](#month-name)
 
@@ -31,6 +32,14 @@ Or as options passed to the `stamp()` method.
 ```js
 const ts1 = timestamp('2022-08-12 08:16:24');
 const ts2 = ts1.stamp({ dateJoint: '/', joint: 'T' });    // 2022/08/12T08:16:24
+```
+
+The `toString()` method is a wrapper around the `stamp()` method to
+auto-stringify a timestamp.
+
+```js
+const ts = timestamp('2022-08-12 08:16:24');
+console.log(`Now: ${ts}`);      // Now: 2022-08-12 08:16:24
 ```
 
 ## Formatting the Date
@@ -79,6 +88,43 @@ Or passed as an argument to the `time()` method:
 ```js
 const ts = timestamp('2022-08-12 08:16:24');
 const tm = ts.time('::');    // 08::16::24
+```
+
+## Formatting Shortcuts
+
+There are a number of shortcut methods for formatting the timestamp, date or
+time in various ways.
+
+The `kebab` methods use "kebab-case" with elements separated by hypens.
+
+```js
+const ts = timestamp('2023-03-07 08:17:25');
+
+ts.kebab();         // 2023-03-07-08-17-25
+ts.kebabDate();     // 2023-03-07
+ts.kebabTime();     // 08-17-25
+ts.kebabDateTime(); // 20230307-08172546
+```
+
+The `snake` methods use "snake-case" with elements separated by underscores.
+
+```js
+const ts = timestamp('2023-03-07 08:17:25');
+
+ts.snake();         // 2023_03_07_08_17_25
+ts.snakeDate();     // 2023_03_07
+ts.snakeTime();     // 08_17_25
+ts.snakeDateTime(); // 20230307_08172546
+```
+
+The `squish` methods squish elements together.
+
+```js
+const ts = timestamp('2023-03-07 08:17:25');
+
+ts.squish();        // 20230307081725
+ts.squishDate();    // 20230307
+ts.squishTime();    // 081725
 ```
 
 ## Weekday Name

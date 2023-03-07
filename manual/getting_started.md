@@ -10,7 +10,7 @@ from `@abw/badger-timestamp`.
 
 ### npm
 
-    npm install @abw/badger-timestamp
+    npm add @abw/badger-timestamp
 
 ### pnpm
 

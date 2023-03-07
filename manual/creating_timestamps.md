@@ -1,13 +1,13 @@
 # Creating Timestamps
 
 - [Valid Formats](#valid-formats)
+- [Configuration Options](#configuration-options)
 - [Now is the Time](#now-is-the-time)
 - [Copy Constructor](#copy-constructor)
 - [Date Constructor](#date-constructor)
 - [Javascript Epoch Time](#javascript-epoch-time)
 - [Unix Epoch Time](#unix-epoch-time)
 - [Component Object](#component-object)
-- [Configuration Options](#configuration-options)
 
 ## Valid Formats
 
@@ -56,6 +56,22 @@ on the platform you're using can parse it.
 const ts = timestamp('12 August 2022 09:01:02');
 ```
 
+## Configuration Options
+
+A second argument can be passed to the `timestamp()` function (or the
+`Timestamp` constructor) as an object containing configuration options.
+
+These can include:
+
+* `joint` - (default: ' ') the value used to join date and time
+* `dateJoint` - (default: '-') the value used to join date elements
+* `timeJoint` - (default: ':') the value used to join time elements
+* `locale` - (default: 'default') the locale for formatting dates and times
+
+These are used by the `date()`, `time()` and `stamp()` functions used to format
+the timestamp, or parts of it, as strings.  They do not affect how the module
+parses timestamps.
+
 ## Now is the Time
 
 If you don't provide a timestamp string then it will default to the current
@@ -63,6 +79,31 @@ date and time.
 
 ```js
 const now = timestamp();
+```
+
+You can pass [configuration options](#configuration-options) to the function
+but it's a bit clumsy because you have to set the first argument to `null`
+to ensure it uses the current date and time.
+
+```js
+const now = timestamp(null, { dateJoint: '/' });
+```
+
+A better alternative (and one that is also shorter to type) is to use the
+`now()` function.
+
+```js
+import { now } from '@abw/badger-timestamp`
+
+const present = now();
+```
+
+Or with options:
+
+```js
+import { now } from '@abw/badger-timestamp`
+
+const present = now({ dateJoint: '/' });
 ```
 
 ## Copy Constructor
@@ -151,18 +192,3 @@ const ts = timestamp({
 });
 ```
 
-## Configuration Options
-
-A second argument can be passed to the `timestamp()` function (or the `Timestamp` constructor)
-as an object containing configuration options.
-
-These can include:
-
-* `joint` - (default: ' ') the value used to join date and time
-* `dateJoint` - (default: '-') the value used to join date elements
-* `timeJoint` - (default: ':') the value used to join time elements
-* `locale` - (default: 'default') the locale for formatting dates and times
-
-These are used by the `date()`, `time()` and `stamp()` functions used to format
-the timestamp, or parts of it, as strings.  They do not affect how the module
-parses timestamps.
