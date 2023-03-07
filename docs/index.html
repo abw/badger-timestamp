@@ -35,6 +35,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-joinTime">joinTime</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-joinTimestamp">joinTimestamp</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-leapYear">leapYear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-now">now</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseDate">parseDate</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseDuration">parseDuration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-singularDurations">singularDurations</a></span></span></li>
@@ -56,7 +57,99 @@ and human-readable strings, and to allow simple date adjustments,
 e.g. + 1 year, + 3 months, etc.</p>
 <p>It is implemented as a thin wrapper around the native JS Date object.</p>
 <h2 id="installation">Installation</h2><p>Install <code>badger-timestamp</code> using your favourite package manager.</p>
-<h3 id="npm">npm</h3><pre><code><code class="source-code prettyprint">npm install @abw/badger-timestamp</code></code></pre><h3 id="pnpm">pnpm</h3><pre><code><code class="source-code prettyprint">pnpm add @abw/badger-timestamp</code></code></pre><h3 id="yarn">yarn</h3><pre><code><code class="source-code prettyprint">yarn add @abw/badger-timestamp</code></code></pre><h2 id="documentation">Documentation</h2><p>Read the <a href="https://abw.github.io/badger-timestamp/docs/manual">Manual</a> for
+<h3 id="npm">npm</h3><pre><code><code class="source-code prettyprint">npm add @abw/badger-timestamp</code></code></pre><h3 id="pnpm">pnpm</h3><pre><code><code class="source-code prettyprint">pnpm add @abw/badger-timestamp</code></code></pre><h3 id="yarn">yarn</h3><pre><code><code class="source-code prettyprint">yarn add @abw/badger-timestamp</code></code></pre><h2 id="examples">Examples</h2><p>The <code>timestamp()</code> function provides a convenient way to create a timestamp
+object.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import { timestamp } from '@abw/badger-timestamp'
+
+// create a timestamp using different string formats
+const ts1 = timestamp('2023-03-07 08:45:52')
+const ts2 = timestamp('2023-03-07T08:45:52')
+const ts3 = timestamp('2023/03/07 08.45.52')
+
+// using a Date object
+const date = new Date('2023-03-07T08:45:52');
+const ts4  = timestamp(date);
+
+// milliseconds since Unix epoch
+const ts5 = timestamp(date.getTime());
+const ts6 = timestamp({ ms: date.getTime() });
+
+// Unix seconds since epoch
+const seconds = Math.round(date.getTime() / 1000);
+const ts7 = timestamp({ unix: seconds });
+
+// using component values
+const ts8 = timestamp({
+  year:    2023,
+  month:   3,
+  date:    7,
+  hours:   8,
+  minutes: 45,
+  seconds: 52
+});</code></code></pre>
+<p>When called without any arguments it returns the current date and time.  Or
+you can use the <code>now()</code> function.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import { now } from '@abw/badger-timestamp'
+
+const present = now();</code></code></pre>
+<p>Methods for getting various parts of the date and time.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2023-03-07 08:45:52');
+ts.date();          // 2023-03-07
+ts.date('/');       // 2023/03/07
+ts.time();          // 08:45:52
+ts.time('.');       // 08.45.52
+ts.year();          // 2023
+ts.month();         // 3
+ts.day();           // 7
+ts.hours();         // 8
+ts.minutes();       // 45
+ts.seconds();       // 52</code></code></pre>
+<p>Methods for setting various parts of the date and time.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">ts.year(2024);      // set year to 2024
+ts.month(4);        // set month to 4 (April)
+ts.day(8);          // set day to 8
+ts.hours(9);        // set hours to 9
+ts.minutes(46);     // set minutes to 46
+ts.seconds(53);     // set seconds to 53</code></code></pre>
+<p>Methods for formatting parts of the timestamp.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2023-03-07 08:45:52');
+ts.kebab();         // 2023-03-07-08-45-52
+ts.kebabDate();     // 2023-03-07
+ts.kebabTime();     // 08-45-52
+ts.kebabDateTime(); // 20230307-084552
+ts.snake();         // 2023_03_07_08_45_52
+ts.snakeDate();     // 2023_03_07
+ts.snakeTime();     // 08_45_52
+ts.snakeDateTime(); // 20230307_084552
+ts.squish();        // 20230307084552
+ts.squishDate();    // 20230307
+ts.squishTime();    // 084552</code></code></pre>
+<p>Methods for returning other information.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">ts.weekdayName();           // Tuesday
+ts.weekdayName('short');    // Tue
+ts.monthName();             // March
+ts.monthName('short');      // Mar</code></code></pre>
+<p>Locale support (default is to use your current locale).</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2023-03-07', { locale: 'fr-FR' })
+ts.weekdayName();         // mardi
+ts.weekdayName('short');  // mar.
+ts.monthName();           // mars
+ts.monthName('short');    // mar</code></code></pre>
+<p>Boolean date/time comparison.  The argument can be any of the formats accepted
+by the constructor, e.g. string, Date object, another timestamp object.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">ts.equal('2023-03-07 08:45:52');
+ts.before('2023-03-07 08:45:52');
+ts.after('2023-03-07 08:45:52');</code></code></pre>
+<p>Adjusting timestamps.  You can specify a string using singular or plural
+names (e.g. "year" or "years") with positive or negative values.  Wrap-around
+is correctly handled (e.g. one day before "2023-02-01" is "2023-01-31").</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">ts.adjust("1 year 3 months");
+ts.adjust({ year: 1, months: 3 });
+ts.adjust({ year: -1, months: -43 });</code></code></pre>
+<p>Note that adjustments mutate the original object so you might want to
+call <code>copy()</code> first.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts2 = ts.copy().adjust("1 year 3 months");</code></code></pre>
+<h2 id="documentation">Documentation</h2><p>Read the <a href="https://abw.github.io/badger-timestamp/docs/manual">Manual</a> for
 examples of use and the <a href="https://abw.github.io/badger-timestamp/docs/identifiers.html">API documentation</a> for
 further details.</p>
 <h2 id="author">Author</h2><p>Andy Wardley <a href="mailto:abw@wardley.org">abw@wardley.org</a></p>

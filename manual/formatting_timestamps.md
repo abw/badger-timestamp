@@ -103,7 +103,7 @@ const ts = timestamp('2023-03-07 08:17:25');
 ts.kebab();         // 2023-03-07-08-17-25
 ts.kebabDate();     // 2023-03-07
 ts.kebabTime();     // 08-17-25
-ts.kebabDateTime(); // 20230307-08172546
+ts.kebabDateTime(); // 20230307-081725
 ```
 
 The `snake` methods use "snake-case" with elements separated by underscores.
@@ -114,7 +114,7 @@ const ts = timestamp('2023-03-07 08:17:25');
 ts.snake();         // 2023_03_07_08_17_25
 ts.snakeDate();     // 2023_03_07
 ts.snakeTime();     // 08_17_25
-ts.snakeDateTime(); // 20230307_08172546
+ts.snakeDateTime(); // 20230307_081725
 ```
 
 The `squish` methods squish elements together.

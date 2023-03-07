@@ -42,13 +42,13 @@
       
     <li data-ice="manualNav" class="indent-h1" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html" data-ice="link">Creating Timestamps</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#valid-formats" data-ice="link">Valid Formats</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#configuration-options" data-ice="link">Configuration Options</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#now-is-the-time" data-ice="link">Now is the Time</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#copy-constructor" data-ice="link">Copy Constructor</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#date-constructor" data-ice="link">Date Constructor</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#javascript-epoch-time" data-ice="link">Javascript Epoch Time</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#unix-epoch-time" data-ice="link">Unix Epoch Time</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#component-object" data-ice="link">Component Object</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/creating_timestamps.html"><a href="manual/creating_timestamps.html#configuration-options" data-ice="link">Configuration Options</a></li>
 </ul>
   </div>
 <div data-ice="manual">
@@ -73,6 +73,7 @@
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#generating-a-timestamp" data-ice="link">Generating a Timestamp</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-the-date" data-ice="link">Formatting the Date</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-the-time" data-ice="link">Formatting the Time</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#formatting-shortcuts" data-ice="link">Formatting Shortcuts</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#weekday-name" data-ice="link">Weekday Name</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/formatting_timestamps.html"><a href="manual/formatting_timestamps.html#month-name" data-ice="link">Month Name</a></li>
 </ul>
@@ -124,6 +125,7 @@
 <li><a href="#generating-a-timestamp">Generating a Timestamp</a></li>
 <li><a href="#formatting-the-date">Formatting the Date</a></li>
 <li><a href="#formatting-the-time">Formatting the Time</a></li>
+<li><a href="#formatting-shortcuts">Formatting Shortcuts</a></li>
 <li><a href="#weekday-name">Weekday Name</a></li>
 <li><a href="#month-name">Month Name</a></li>
 </ul>
@@ -139,6 +141,10 @@ const ts2 = ts1.stamp();    // 2022/08/12T08:16:24</code></code></pre>
 <p>Or as options passed to the <code>stamp()</code> method.</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">const ts1 = timestamp('2022-08-12 08:16:24');
 const ts2 = ts1.stamp({ dateJoint: '/', joint: 'T' });    // 2022/08/12T08:16:24</code></code></pre>
+<p>The <code>toString()</code> method is a wrapper around the <code>stamp()</code> method to
+auto-stringify a timestamp.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2022-08-12 08:16:24');
+console.log(`Now: ${ts}`);      // Now: 2022-08-12 08:16:24</code></code></pre>
 <h2 id="formatting-the-date">Formatting the Date</h2><p>Call the <code>date()</code> method to format the date as a string.</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2022-08-12 08:16:24');
 const dt = ts.date();    // 2022-08-12</code></code></pre>
@@ -159,6 +165,28 @@ const tm = ts.time();    // 08::16::24</code></code></pre>
 <p>Or passed as an argument to the <code>time()</code> method:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2022-08-12 08:16:24');
 const tm = ts.time('::');    // 08::16::24</code></code></pre>
+<h2 id="formatting-shortcuts">Formatting Shortcuts</h2><p>There are a number of shortcut methods for formatting the timestamp, date or
+time in various ways.</p>
+<p>The <code>kebab</code> methods use "kebab-case" with elements separated by hypens.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2023-03-07 08:17:25');
+
+ts.kebab();         // 2023-03-07-08-17-25
+ts.kebabDate();     // 2023-03-07
+ts.kebabTime();     // 08-17-25
+ts.kebabDateTime(); // 20230307-081725</code></code></pre>
+<p>The <code>snake</code> methods use "snake-case" with elements separated by underscores.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2023-03-07 08:17:25');
+
+ts.snake();         // 2023_03_07_08_17_25
+ts.snakeDate();     // 2023_03_07
+ts.snakeTime();     // 08_17_25
+ts.snakeDateTime(); // 20230307_081725</code></code></pre>
+<p>The <code>squish</code> methods squish elements together.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const ts = timestamp('2023-03-07 08:17:25');
+
+ts.squish();        // 20230307081725
+ts.squishDate();    // 20230307
+ts.squishTime();    // 081725</code></code></pre>
 <h2 id="weekday-name">Weekday Name</h2><p>The <code>weekday()</code> method returns the day of the week as an integer from 0 (Sunday)
 to 6 (Saturday).</p>
 <p>The <code>weekdayName()</code> method returns the day of the week as a string.</p>

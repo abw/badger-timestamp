@@ -48,6 +48,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "@abw/badger-timestamp~now",
+    "function/index.html#static-function-now",
+    "<span>now</span> <span class=\"search-result-import-path\">@abw/badger-timestamp</span>",
+    "function"
+  ],
+  [
     "@abw/badger-timestamp~parsedate",
     "function/index.html#static-function-parseDate",
     "<span>parseDate</span> <span class=\"search-result-import-path\">@abw/badger-timestamp</span>",
@@ -468,6 +474,30 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/timestamp.js~timestamp#kebab",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-kebab",
+    "src/Timestamp.js~Timestamp#kebab",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#kebabdate",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-kebabDate",
+    "src/Timestamp.js~Timestamp#kebabDate",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#kebabdatetime",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-kebabDateTime",
+    "src/Timestamp.js~Timestamp#kebabDateTime",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#kebabtime",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-kebabTime",
+    "src/Timestamp.js~Timestamp#kebabTime",
+    "method"
+  ],
+  [
     "src/timestamp.js~timestamp#minutes",
     "class/src/Timestamp.js~Timestamp.html#instance-method-minutes",
     "src/Timestamp.js~Timestamp#minutes",
@@ -516,6 +546,48 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/timestamp.js~timestamp#snake",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-snake",
+    "src/Timestamp.js~Timestamp#snake",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#snakedate",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-snakeDate",
+    "src/Timestamp.js~Timestamp#snakeDate",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#snakedatetime",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-snakeDateTime",
+    "src/Timestamp.js~Timestamp#snakeDateTime",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#snaketime",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-snakeTime",
+    "src/Timestamp.js~Timestamp#snakeTime",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#squish",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-squish",
+    "src/Timestamp.js~Timestamp#squish",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#squishdate",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-squishDate",
+    "src/Timestamp.js~Timestamp#squishDate",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#squishtime",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-squishTime",
+    "src/Timestamp.js~Timestamp#squishTime",
+    "method"
+  ],
+  [
     "src/timestamp.js~timestamp#stamp",
     "class/src/Timestamp.js~Timestamp.html#instance-method-stamp",
     "src/Timestamp.js~Timestamp#stamp",
@@ -525,6 +597,12 @@ window.esdocSearchIndex = [
     "src/timestamp.js~timestamp#time",
     "class/src/Timestamp.js~Timestamp.html#instance-method-time",
     "src/Timestamp.js~Timestamp#time",
+    "method"
+  ],
+  [
+    "src/timestamp.js~timestamp#tostring",
+    "class/src/Timestamp.js~Timestamp.html#instance-method-toString",
+    "src/Timestamp.js~Timestamp#toString",
     "method"
   ],
   [
