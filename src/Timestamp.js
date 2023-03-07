@@ -85,6 +85,7 @@ export class Timestamp {
       fail("Invalid timestamp: ", ts)
     }
   }
+
   /**
    * Method to return a new object as a copy of the current object
    * @return {Object} - new `Timestamp` object
@@ -92,6 +93,10 @@ export class Timestamp {
   copy() {
     return new Timestamp(this.parts);
   }
+
+  //--------------------------------------------------------------------------
+  // Methods to set/get constituent parts
+  //--------------------------------------------------------------------------
   /**
    * Method to get or set the year.
    * @param {Integer} [year] - optional new value for year
@@ -103,6 +108,7 @@ export class Timestamp {
     }
     return this.parts.year;
   }
+
   /**
    * Method to get or set the month.
    * @param {Integer} [month] - optional new value for month
@@ -115,6 +121,7 @@ export class Timestamp {
     }
     return this.parts.month;
   }
+
   /**
    * Method to get or set the day.
    * @param {Integer} [day] - optional new value for day
@@ -127,6 +134,7 @@ export class Timestamp {
     }
     return this.parts.day;
   }
+
   /**
    * Method to get or set the hours.
    * @param {Integer} [hours] - optional new value for hours
@@ -139,6 +147,7 @@ export class Timestamp {
     }
     return this.parts.hours;
   }
+
   /**
    * Method to get or set the minutes.
    * @param {Integer} [minutes] - optional new value for minutes
@@ -151,6 +160,7 @@ export class Timestamp {
     }
     return this.parts.minutes;
   }
+
   /**
    * Method to get or set the seconds.
    * @param {Integer} [seconds] - optional new value for seconds
@@ -163,69 +173,10 @@ export class Timestamp {
     }
     return this.parts.seconds;
   }
-  /**
-   * Method to return the month name.
-   * @param {String} [format='long'] - optional format: `full`, `long`, `medium`, `short`
-   * @return {String} - the month name
-   */
-  monthName(format='long') {
-    const mon = this.dateObject().toLocaleString(
-      this.props.locale,
-      { month: format }
-    );
-    // for some insane reason which I can't fathom, the short format
-    // returns 3 letter words for every month (Jan, Feb, Mar, etc),
-    // except September which is returned as "Sept". To avoid this
-    // inconsistency I'm shortening it to "Sep".
-    return format === 'short'
-      ? mon.slice(0, 3)
-      : mon;
-  }
-  /**
-   * Method to return the weekday name as a number from 0 (Sunday) to 6 (Saturday)
-   * @return {Integer} - the weekday number
-   */
-  weekday() {
-    return this.dateObject().getDay()
-  }
-  /**
-   * Method to return the weekday name.
-   * @param {String} [format='long'] - optional format: `full`, `long`, `medium`, `short`
-   * @return {String} - the weekday name
-   */
-  weekdayName(format='long') {
-    return this.dateObject().toLocaleString(
-      this.props.locale,
-      { weekday: format }
-    );
-  }
-  /**
-   * Method to return a formatted date string in the form `YYYY-MM-DD`.
-   * @param {String} [joint='-'] - optional joining character
-   * @return {String} - formatted date string
-   */
-  date(joint=this.props.dateJoint) {
-    return joinDate(this.parts, joint)
-  }
-  /**
-   * Method to return a formatted time string in the form `HH:MM:SS`.
-   * @param {String} [joint=':''] - optional joining character
-   * @return {String} - formatted time string
-   */
-  time(joint=this.props.timeJoint) {
-    return joinTime(this.parts, joint)
-  }
-  /**
-   * Method to return a formatted timestamp string in the form `YYYY-MM-DD HH:MM:SS`.
-   * @param {Object} [options] - configuration options
-   * @param {String} [options.joint=' '] - joining character between date and time parts
-   * @param {String} [options.dateJoint='-'] - joining character for date segments
-   * @param {String} [options.timeJoint=':'] - joining character for time segments
-   * @return {String} - formatted date/time stamp
-   */
-  stamp(options={}) {
-    return joinTimestamp(this.parts, { ...this.props, ...options })
-  }
+
+  //--------------------------------------------------------------------------
+  // Conversion to other formats
+  //--------------------------------------------------------------------------
   /**
    * Method to return a `Date` object
    * @return {Date} - new date object
@@ -247,6 +198,173 @@ export class Timestamp {
   epochSeconds() {
     return Math.floor(this.epochMilliseconds() / 1000);
   }
+
+  //--------------------------------------------------------------------------
+  // Formatting
+  //--------------------------------------------------------------------------
+  /**
+   * Method to return a formatted timestamp string in the form `YYYY-MM-DD HH:MM:SS`.
+   * @param {Object} [options] - configuration options
+   * @param {String} [options.joint=' '] - joining character between date and time parts
+   * @param {String} [options.dateJoint='-'] - joining character for date segments
+   * @param {String} [options.timeJoint=':'] - joining character for time segments
+   * @return {String} - formatted date/time stamp
+   */
+  stamp(options={}) {
+    return joinTimestamp(
+      this.parts,
+      { ...this.props, ...options }
+    )
+  }
+
+  /**
+   * Auto-stringification method as a wrapper around {@link stamp()}.
+   * @param {Object} [options] - configuration options
+   * @param {String} [options.joint=' '] - joining character between date and time parts
+   * @param {String} [options.dateJoint='-'] - joining character for date segments
+   * @param {String} [options.timeJoint=':'] - joining character for time segments
+   * @return {String} - formatted date/time stamp
+   */
+  toString(options) {
+    return this.stamp(options);
+  }
+
+  /**
+   * Method to return a formatted date string in the form `YYYY-MM-DD`.
+   * @param {String} [joint='-'] - optional joining character
+   * @return {String} - formatted date string
+   */
+  date(joint=this.props.dateJoint) {
+    return joinDate(this.parts, joint)
+  }
+
+  /**
+   * Method to return a formatted time string in the form `HH:MM:SS`.
+   * @param {String} [joint=':''] - optional joining character
+   * @return {String} - formatted time string
+   */
+  time(joint=this.props.timeJoint) {
+    return joinTime(this.parts, joint)
+  }
+
+  /**
+   * Method to return the timestamp in kebab-case `YYYY-MM-DD-hh-mm-ss` regardless of any options.
+   * @return {String} - formatted date string
+   */
+  kebab() {
+    return joinTimestamp(
+      this.parts,
+      { joint: '-', dateJoint: '-', timeJoint: '-' }
+    )
+  }
+
+  /**
+   * Method to return the date and time in kebab-case `YYYYMMDD-hhmmss` regardless of any options.
+   * @return {String} - formatted date string
+   */
+  kebabDateTime() {
+    return joinTimestamp(
+      this.parts,
+      { joint: '-', dateJoint: '', timeJoint: '' }
+    )
+  }
+
+  /**
+   * Method to return the date in kebab-case `YYYY-MM-DD` regardless of any options.
+   * @return {String} - formatted date string
+   */
+  kebabDate() {
+    return joinDate(this.parts, '-')
+  }
+
+  /**
+   * Method to return the date in kebab-case `YYYY-MM-DD` regardless of any options.
+   * @return {String} - formatted date string
+   */
+  kebabTime() {
+    return joinTime(this.parts, '-')
+  }
+
+  /**
+   * Method to return the timestamp in snake-case `YYYY_MM_DD_hh_mm_ss` regardless of any options.
+   * @return {String} - formatted date string
+   */
+  snake() {
+    return joinTimestamp(
+      this.parts,
+      { joint: '_', dateJoint: '_', timeJoint: '_' }
+    )
+  }
+
+  /**
+   * Method to return the date in snake-case `YYYY_MM_DD` regardless of any options.
+   * @return {String} - formatted date string
+   */
+  snakeDate() {
+    return joinDate(this.parts, '_')
+  }
+
+  /**
+   * Method to return the date in snake-case `YYYY_MM_DD` regardless of any options.
+   * @return {String} - formatted date string
+   */
+  snakeTime() {
+    return joinTime(this.parts, '_')
+  }
+
+  /**
+   * Method to return the date and time in snake-case `YYYYMMDD_hhmmss` regardless of any options.
+   * @return {String} - formatted date string
+   */
+  snakeDateTime() {
+    return joinTimestamp(
+      this.parts,
+      { joint: '_', dateJoint: '', timeJoint: '' }
+    )
+  }
+
+  /**
+   * Method to return the month name.
+   * @param {String} [format='long'] - optional format: `full`, `long`, `medium`, `short`
+   * @return {String} - the month name
+   */
+  monthName(format='long') {
+    const mon = this.dateObject().toLocaleString(
+      this.props.locale,
+      { month: format }
+    );
+    // for some insane reason which I can't fathom, the short format
+    // returns 3 letter words for every month (Jan, Feb, Mar, etc),
+    // except September which is returned as "Sept". To avoid this
+    // inconsistency I'm shortening it to "Sep".
+    return format === 'short'
+      ? mon.slice(0, 3)
+      : mon;
+  }
+
+  /**
+   * Method to return the weekday name as a number from 0 (Sunday) to 6 (Saturday)
+   * @return {Integer} - the weekday number
+   */
+  weekday() {
+    return this.dateObject().getDay()
+  }
+
+  /**
+   * Method to return the weekday name.
+   * @param {String} [format='long'] - optional format: `full`, `long`, `medium`, `short`
+   * @return {String} - the weekday name
+   */
+  weekdayName(format='long') {
+    return this.dateObject().toLocaleString(
+      this.props.locale,
+      { weekday: format }
+    );
+  }
+
+  //--------------------------------------------------------------------------
+  // Adjustment
+  //--------------------------------------------------------------------------
   /**
    * Method to adjust the timestamp.  The duration can be specified as a string containing
    * one or more items to adjust in either singular or plural form, e.g. `"1 year, 1 month"`,
@@ -349,6 +467,10 @@ export class Timestamp {
 
     return this;
   }
+
+  //--------------------------------------------------------------------------
+  // Comparison
+  //--------------------------------------------------------------------------
   /**
    * Method to compare the timestamp to another.  The arguments can be any that are accepted
    * by the constructor.
@@ -422,6 +544,9 @@ export class Timestamp {
   }
 }
 
+//--------------------------------------------------------------------------
+// Utility functions
+//--------------------------------------------------------------------------
 /**
  * Function to determine is a string is a valid timestamp.
  * @param {String} ts - timestamp string
@@ -629,5 +754,15 @@ export const leapYear = year => {
  * @return {Object} - a `Timestamp` object
  */
 export const timestamp = (ts, options) => new Timestamp(ts, options)
+
+/**
+ * Function to create a new `Timestamp` object for the current date/time
+ * @param {Object} [options] - configuration options
+ * @param {String} [options.joint=' '] - joining character between date and time parts
+ * @param {String} [options.dateJoint='-'] - joining character for date segments
+ * @param {String} [options.timeJoint=':'] - joining character for time segments
+ * @return {Object} - a `Timestamp` object
+ */
+export const now = (options) => new Timestamp(null, options)
 
 export default Timestamp
