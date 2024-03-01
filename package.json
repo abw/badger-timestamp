@@ -28,8 +28,9 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "lint": "eslint 'src/**/*'",
-    "docs:build": "esdoc",
-    "docs:serve": "serve docs",
+    "docs:dev": "vitepress dev website",
+    "docs:build": "vitepress build website",
+    "docs:preview": "vitepress preview website",
     "test": "ava",
     "pretest": "pnpm run build"
   },
@@ -40,17 +41,13 @@
     "ISO8601"
   ],
   "devDependencies": {
-    "@itsjamie/esdoc-cli": "^0.5.0",
-    "@itsjamie/esdoc-core": "^0.5.0",
-    "@itsjamie/esdoc-importpath-plugin": "^0.5.0",
-    "@itsjamie/esdoc-inject-style-plugin": "^0.5.0",
-    "@itsjamie/esdoc-standard-plugin": "^0.5.0",
+    "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.0",
-    "@rollup/plugin-commonjs": "^24.0.1",
     "ava": "^4.3.0",
     "eslint": "^8.20.0",
-    "rollup": "^3.18.0"
+    "rollup": "^3.18.0",
+    "vitepress": "1.0.0-rc.44"
   },
   "dependencies": {
     "@abw/badger-utils": "^1.0.3"
