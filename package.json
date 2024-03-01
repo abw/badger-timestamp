@@ -1,6 +1,6 @@
 {
   "name": "@abw/badger-timestamp",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Simple timestamp utility",
   "type": "module",
   "main": "dist/badger-timestamp.cjs",
@@ -17,6 +17,7 @@
   "files": [
     "dist"
   ],
+  "homepage": "https://abw.github.io/badger-timestamp/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/abw/badger-timestamp.git"
