@@ -29,6 +29,11 @@ Install `badger-timestamp` using your favourite package manager.
 
     yarn add @abw/badger-timestamp
 
+## Documentation
+
+Visit the [Website](https://abw.github.io/badger-timestamp/) for
+documentation and examples.
+
 ## Examples
 
 The `timestamp()` function provides a convenient way to create a timestamp
@@ -162,12 +167,6 @@ call `copy()` first.
 ```js
 const ts2 = ts.copy().adjust("1 year 3 months");
 ```
-
-## Documentation
-
-Read the [Manual](https://abw.github.io/badger-timestamp/docs/manual) for
-examples of use and the [API documentation](https://abw.github.io/badger-timestamp/docs/identifiers.html) for
-further details.
 
 ## Author
 
