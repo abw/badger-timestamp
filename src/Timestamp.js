@@ -569,6 +569,20 @@ export class Timestamp {
   notAfter(...args) {
     return this.compare(...args) <= 0;
   }
+  /**
+   * Method to test for the timestamp being in the past.
+   * @return {Boolean} - true if the timestamp is before the current time
+   */
+  inThePast() {
+    return this.before(now());
+  }
+  /**
+   * Method to test for the timestamp being in the past.
+   * @return {Boolean} - true if the timestamp is before the current time
+   */
+  inTheFuture() {
+    return this.after(now());
+  }
 }
 
 //--------------------------------------------------------------------------

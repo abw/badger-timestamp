@@ -1,5 +1,5 @@
 import test from 'ava';
-import { timestamp } from '../src/Timestamp.js'
+import { now, timestamp } from '../src/Timestamp.js'
 
 test(
   'compare years',
@@ -90,5 +90,21 @@ test(
     const stamp1 = timestamp('2022-02-03 03:04:05');
     t.is( stamp1.notAfter('2022-02-05 03:04:05'), true );
     t.is( stamp1.notAfter('2022-02-03 03:04:05'), true );
+  }
+);
+test(
+  'inThePast',
+  t => {
+    const stamp1 = now().adjust('-2 seconds');
+    t.true( stamp1.inThePast() );
+    t.false( stamp1.inTheFuture() );
+  }
+);
+test(
+  'inTheFuture',
+  t => {
+    const stamp1 = now().adjust('2 seconds');
+    t.true( stamp1.inTheFuture() );
+    t.false( stamp1.inThePast() );
   }
 );
