@@ -44,6 +44,41 @@ test(
   }
 );
 test(
+  'parseDuration("1 week")',
+  t => {
+    const d = parseDuration('1 week');
+    t.deepEqual( d, { day: 7 });
+  }
+);
+test(
+  'parseDuration("-1 week")',
+  t => {
+    const d = parseDuration('-1 week');
+    t.deepEqual( d, { day: -7 });
+  }
+);
+test(
+  'parseDuration("2 weeks")',
+  t => {
+    const d = parseDuration('2 weeks');
+    t.deepEqual( d, { day: 14 });
+  }
+);
+test(
+  'parseDuration("-2 weeks")',
+  t => {
+    const d = parseDuration('-2 weeks');
+    t.deepEqual( d, { day: -14 });
+  }
+);
+test(
+  'parseDuration("-2 weeks 1 day")',
+  t => {
+    const d = parseDuration('-2 weeks 1 day');
+    t.deepEqual( d, { day: -13 });
+  }
+);
+test(
   'parseDuration("1 hour")',
   t => {
     const d = parseDuration('1 hour');

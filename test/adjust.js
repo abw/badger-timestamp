@@ -87,6 +87,65 @@ test(
 );
 
 //-----------------------------------------------------------------------------
+// week(s)
+//-----------------------------------------------------------------------------
+test(
+  "adjust('1 week')",
+  t => {
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 week');
+    t.is( s.stamp(), '2022-09-15 07:06:05' )
+  }
+);
+test(
+  "adjust('1 weeks')",
+  t => {
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 weeks');
+    t.is( s.stamp(), '2022-09-15 07:06:05' )
+  }
+);
+test(
+  "adjust('2 weeks')",
+  t => {
+    const s = timestamp('2022-09-08 07:06:05').adjust('2 weeks');
+    t.is( s.stamp(), '2022-09-22 07:06:05' )
+  }
+);
+test(
+  "adjust('-2 weeks')",
+  t => {
+    const s = timestamp('2022-09-22 07:06:05').adjust('-2 weeks');
+    t.is( s.stamp(), '2022-09-08 07:06:05' )
+  }
+);
+test(
+  "adjust('2 weeks 3 days')",
+  t => {
+    const s = timestamp('2022-09-08 07:06:05').adjust('2 weeks 3 days');
+    t.is( s.stamp(), '2022-09-25 07:06:05' )
+  }
+);
+test(
+  "adjust('-2 weeks -3 days')",
+  t => {
+    const s = timestamp('2022-09-25 07:06:05').adjust('-2 weeks -3 days');
+    t.is( s.stamp(), '2022-09-08 07:06:05' )
+  }
+);
+test(
+  "adjust({ weeks: 2, days: 3 })",
+  t => {
+    const s = timestamp('2022-09-08 07:06:05').adjust({ weeks: 2,  days: 3});
+    t.is( s.stamp(), '2022-09-25 07:06:05' )
+  }
+);
+test(
+  "adjust({ weeks: -2, days: -3 })",
+  t => {
+    const s = timestamp('2022-09-25 07:06:05').adjust({ weeks: -2, days: -3 });
+    t.is( s.stamp(), '2022-09-08 07:06:05' )
+  }
+);
+//-----------------------------------------------------------------------------
 // day(s)
 //-----------------------------------------------------------------------------
 test(

@@ -654,7 +654,7 @@ export const parseDuration = duration => {
     const d = m[2].replace(/s$/, '');   // convert plural to singular
     result[d] = n;
   }
-  return result;
+  return weeksToDays(result);
 }
 
 /**
@@ -669,7 +669,21 @@ export const singularDurations = duration => {
       result[key.replace(/s$/, '')] = value;
     }
   )
-  return result;
+  return weeksToDays(result);
+}
+
+/**
+ * Function to convert an object containing a number of weeks (as `week`) into
+ * multiples of 7 days, added onto any current number of days (as `day`).
+ * @param {Object} duration - object containing duration elements, including `week`
+ * @return {Object} - object containing any of `year`, `month`, `day`, `hour`, `minute` and `second`.
+ */
+export const weeksToDays = duration => {
+  if (duration.week) {
+    duration.day = (duration.day || 0) + duration.week * 7
+    delete duration.week
+  }
+  return duration
 }
 
 /**
