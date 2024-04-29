@@ -85,3 +85,23 @@ ts1.notBefore('2022-08-12 08:16:23'); // true
 ts1.notBefore('2022-08-12 08:16:24'); // true
 ts1.notBefore('2022-08-12 08:16:25'); // false
 ```
+
+## inThePast() {#inThePast}
+
+The `inThePast()` method is another shortcut for testing if a timestamp is
+before the current time.
+
+```js
+timestamp('2099-03-19 08:16:23').inThePast(); // false
+timestamp('1999-03-19 08:16:23').inThePast(); // true
+```
+
+## inTheFuture() {#inTheFuture}
+
+The `inTheFuture()` method does the opposite, testing if a timestamp is after
+the current time.
+
+```js
+timestamp('2099-03-19 08:16:23').inTheFuture(); // true
+timestamp('1999-03-19 08:16:23').inTheFuture(); // false
+```

@@ -68,3 +68,8 @@ ts.adjust("1 year|2 months|3 days");
 
 The pattern matching algorithm looks for a sequence of digits (with an optional leading
 negative sign) and then a word.  Anything else will be ignored.
+
+You can specify either `week` or `weeks` as a component in either form.  It
+will be automatically converted to a multiple of 7 days.
+
+
