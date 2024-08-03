@@ -124,3 +124,23 @@ test(
     t.is( stamp.parts.seconds, 24 )
   }
 )
+
+test(
+  'invalid string',
+  t => t.throws(
+    () => timestamp('No'),
+    {
+      message: 'Invalid timestamp: No'
+    }
+  )
+)
+
+test(
+  'invalid constructor',
+  t => t.throws(
+    () => timestamp(23.45),
+    {
+      message: 'Invalid timestamp: 23.45'
+    }
+  )
+)

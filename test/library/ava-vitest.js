@@ -1,6 +1,7 @@
 import { test, expect } from 'vitest'
 
-// Adapter for running test written for Ava using Vitest
+// Adapter for running test written for Ava using Vitest.
+// NOTE: this only supports the subset of Ava functions that I'm using.
 const t = {
   is: (input, expected) =>
     expect(input).toBe(expected),
@@ -10,6 +11,17 @@ const t = {
     expect(input).toBe(true),
   false: input =>
     expect(input).toBe(false),
+  throws: (fn, expected={}) => {
+    try {
+      fn()
+    }
+    catch (e) {
+      if (expected.message) {
+        expect(e.message).toBe(expected.message)
+      }
+      return e
+    }
+  }
 }
 
 const AvaVitest = (name, fn) =>

@@ -313,6 +313,13 @@ test(
   }
 )
 test(
+  'adjust({ days: 3 }) - month/year overflow',
+  t => {
+    const s = timestamp('2022-12-30 07:06:05').adjust({ days: 3 })
+    t.is( s.stamp(), '2023-01-02 07:06:05' )
+  }
+)
+test(
   'adjust({ months: 20 })',
   t => {
     const s = timestamp('2022-09-08 07:06:05').adjust({ months: 20 })
