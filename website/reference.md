@@ -71,6 +71,8 @@ Methods for comparing Timestamps.
 |[`after(ts)`](comparing-timestamps#after)|Test if the Timestamp is after another one|
 |[`notBefore(ts)`](comparing-timestamps#notBefore)|Test if the Timestamp is not before another one|
 |[`notAfter(ts)`](comparing-timestamps#notAfter)|Test if the Timestamp is not after another one|
+|[`inThePast()`](comparing-timestamps#inThePast)|Test if the Timestamp is in the past|
+|[`inTheFuture()`](comparing-timestamps#inTheFuture)|Test if the Timestamp is in the future|
 
 ## Utility Functions
 
