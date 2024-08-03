@@ -1,4 +1,5 @@
-import test from 'ava';
+// import { test, expect } from 'vitest'
+import test from './library/ava-vitest.js'
 import { timestamp } from '../src/Timestamp.js'
 
 //-----------------------------------------------------------------------------
@@ -7,45 +8,45 @@ import { timestamp } from '../src/Timestamp.js'
 test(
   "adjust('1 year')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 year');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 year')
     t.is( s.stamp(), '2023-09-08 07:06:05' )
   }
-);
+)
 test(
   "adjust('1 years')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 years');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 years')
     t.is( s.stamp(), '2023-09-08 07:06:05' )
   }
-);
+)
 test(
   "adjust('-1 years')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('-1 years');
+    const s = timestamp('2022-09-08 07:06:05').adjust('-1 years')
     t.is( s.stamp(), '2021-09-08 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ year: 1 })",
+  'adjust({ year: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ year: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ year: 1 })
     t.is( s.stamp(), '2023-09-08 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ year: -1 })",
+  'adjust({ year: -1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ year: -1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ year: -1 })
     t.is( s.stamp(), '2021-09-08 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ years: 1 })",
+  'adjust({ years: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ years: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ years: 1 })
     t.is( s.stamp(), '2023-09-08 07:06:05' )
   }
-);
+)
 
 //-----------------------------------------------------------------------------
 // month(s)
@@ -53,38 +54,38 @@ test(
 test(
   "adjust('1 month')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 month');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 month')
     t.is( s.stamp(), '2022-10-08 07:06:05' )
   }
-);
+)
 test(
   "adjust('1 months')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 months');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 months')
     t.is( s.stamp(), '2022-10-08 07:06:05' )
   }
-);
+)
 test(
   "adjust('-1 months')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('-1 months');
+    const s = timestamp('2022-09-08 07:06:05').adjust('-1 months')
     t.is( s.stamp(), '2022-08-08 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ month: 1 })",
+  'adjust({ month: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ month: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ month: 1 })
     t.is( s.stamp(), '2022-10-08 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ months: 1 })",
+  'adjust({ months: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ months: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ months: 1 })
     t.is( s.stamp(), '2022-10-08 07:06:05' )
   }
-);
+)
 
 //-----------------------------------------------------------------------------
 // week(s)
@@ -92,97 +93,97 @@ test(
 test(
   "adjust('1 week')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 week');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 week')
     t.is( s.stamp(), '2022-09-15 07:06:05' )
   }
-);
+)
 test(
   "adjust('1 weeks')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 weeks');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 weeks')
     t.is( s.stamp(), '2022-09-15 07:06:05' )
   }
-);
+)
 test(
   "adjust('2 weeks')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('2 weeks');
+    const s = timestamp('2022-09-08 07:06:05').adjust('2 weeks')
     t.is( s.stamp(), '2022-09-22 07:06:05' )
   }
-);
+)
 test(
   "adjust('-2 weeks')",
   t => {
-    const s = timestamp('2022-09-22 07:06:05').adjust('-2 weeks');
+    const s = timestamp('2022-09-22 07:06:05').adjust('-2 weeks')
     t.is( s.stamp(), '2022-09-08 07:06:05' )
   }
-);
+)
 test(
   "adjust('2 weeks 3 days')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('2 weeks 3 days');
+    const s = timestamp('2022-09-08 07:06:05').adjust('2 weeks 3 days')
     t.is( s.stamp(), '2022-09-25 07:06:05' )
   }
-);
+)
 test(
   "adjust('-2 weeks -3 days')",
   t => {
-    const s = timestamp('2022-09-25 07:06:05').adjust('-2 weeks -3 days');
+    const s = timestamp('2022-09-25 07:06:05').adjust('-2 weeks -3 days')
     t.is( s.stamp(), '2022-09-08 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ weeks: 2, days: 3 })",
+  'adjust({ weeks: 2, days: 3 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ weeks: 2,  days: 3});
+    const s = timestamp('2022-09-08 07:06:05').adjust({ weeks: 2,  days: 3})
     t.is( s.stamp(), '2022-09-25 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ weeks: -2, days: -3 })",
+  'adjust({ weeks: -2, days: -3 })',
   t => {
-    const s = timestamp('2022-09-25 07:06:05').adjust({ weeks: -2, days: -3 });
+    const s = timestamp('2022-09-25 07:06:05').adjust({ weeks: -2, days: -3 })
     t.is( s.stamp(), '2022-09-08 07:06:05' )
   }
-);
+)
 //-----------------------------------------------------------------------------
 // day(s)
 //-----------------------------------------------------------------------------
 test(
   "adjust('1 day')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 day');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 day')
     t.is( s.stamp(), '2022-09-09 07:06:05' )
   }
-);
+)
 test(
   "adjust('1 days')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 days');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 days')
     t.is( s.stamp(), '2022-09-09 07:06:05' )
   }
-);
+)
 test(
   "adjust('-1 days')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('-1 days');
+    const s = timestamp('2022-09-08 07:06:05').adjust('-1 days')
     t.is( s.stamp(), '2022-09-07 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ day: 1 })",
+  'adjust({ day: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ day: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ day: 1 })
     t.is( s.stamp(), '2022-09-09 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ days: 1 })",
+  'adjust({ days: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ days: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ days: 1 })
     t.is( s.stamp(), '2022-09-09 07:06:05' )
   }
-);
+)
 
 //-----------------------------------------------------------------------------
 // hour(s)
@@ -190,31 +191,31 @@ test(
 test(
   "adjust('1 hour')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 hour');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 hour')
     t.is( s.stamp(), '2022-09-08 08:06:05' )
   }
-);
+)
 test(
   "adjust('1 hours')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 hours');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 hours')
     t.is( s.stamp(), '2022-09-08 08:06:05' )
   }
-);
+)
 test(
-  "adjust({ hour: 1 })",
+  'adjust({ hour: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ hour: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ hour: 1 })
     t.is( s.stamp(), '2022-09-08 08:06:05' )
   }
-);
+)
 test(
-  "adjust({ hours: 1 })",
+  'adjust({ hours: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ hours: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ hours: 1 })
     t.is( s.stamp(), '2022-09-08 08:06:05' )
   }
-);
+)
 
 //-----------------------------------------------------------------------------
 // minute(s)
@@ -222,31 +223,31 @@ test(
 test(
   "adjust('1 minute')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 minute');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 minute')
     t.is( s.stamp(), '2022-09-08 07:07:05' )
   }
-);
+)
 test(
   "adjust('1 minutes')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 minutes');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 minutes')
     t.is( s.stamp(), '2022-09-08 07:07:05' )
   }
-);
+)
 test(
-  "adjust({ minute: 1 })",
+  'adjust({ minute: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ minute: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ minute: 1 })
     t.is( s.stamp(), '2022-09-08 07:07:05' )
   }
-);
+)
 test(
-  "adjust({ minutes: 1 })",
+  'adjust({ minutes: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ minutes: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ minutes: 1 })
     t.is( s.stamp(), '2022-09-08 07:07:05' )
   }
-);
+)
 
 //-----------------------------------------------------------------------------
 // second(s)
@@ -254,113 +255,113 @@ test(
 test(
   "adjust('1 second')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 second');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 second')
     t.is( s.stamp(), '2022-09-08 07:06:06' )
   }
-);
+)
 test(
   "adjust('1 seconds')",
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust('1 seconds');
+    const s = timestamp('2022-09-08 07:06:05').adjust('1 seconds')
     t.is( s.stamp(), '2022-09-08 07:06:06' )
   }
-);
+)
 test(
-  "adjust({ second: 1 })",
+  'adjust({ second: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ second: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ second: 1 })
     t.is( s.stamp(), '2022-09-08 07:06:06' )
   }
-);
+)
 test(
-  "adjust({ seconds: 1 })",
+  'adjust({ seconds: 1 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ seconds: 1 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ seconds: 1 })
     t.is( s.stamp(), '2022-09-08 07:06:06' )
   }
-);
+)
 
 //-----------------------------------------------------------------------------
 // overflow
 //-----------------------------------------------------------------------------
 test(
-  "adjust({ seconds: 200 })",
+  'adjust({ seconds: 200 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ seconds: 200 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ seconds: 200 })
     t.is( s.stamp(), '2022-09-08 07:09:25' )
   }
-);
+)
 test(
-  "adjust({ minutes: 200 })",
+  'adjust({ minutes: 200 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ minutes: 200 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ minutes: 200 })
     t.is( s.stamp(), '2022-09-08 10:26:05' )
   }
-);
+)
 test(
-  "adjust({ hours: 75 })",
+  'adjust({ hours: 75 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ hours: 75 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ hours: 75 })
     t.is( s.stamp(), '2022-09-11 10:06:05' )
   }
-);
+)
 test(
-  "adjust({ days: 61 })",
+  'adjust({ days: 61 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ days: 61 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ days: 61 })
     t.is( s.stamp(), '2022-11-08 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ months: 20 })",
+  'adjust({ months: 20 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ months: 20 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ months: 20 })
     t.is( s.stamp(), '2024-05-08 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ years: 2 })",
+  'adjust({ years: 2 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ years: 2 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ years: 2 })
     t.is( s.stamp(), '2024-09-08 07:06:05' )
   }
-);
+)
 
 //-----------------------------------------------------------------------------
 // underflow
 //-----------------------------------------------------------------------------
 test(
-  "adjust({ seconds: -200 })",
+  'adjust({ seconds: -200 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ seconds: -200 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ seconds: -200 })
     t.is( s.stamp(), '2022-09-08 07:02:45' )
   }
-);
+)
 test(
-  "adjust({ minutes: -200 })",
+  'adjust({ minutes: -200 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ minutes: -200 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ minutes: -200 })
     t.is( s.stamp(), '2022-09-08 03:46:05' )
   }
-);
+)
 test(
-  "adjust({ hours: -75 })",
+  'adjust({ hours: -75 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ hours: -80 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ hours: -80 })
     t.is( s.stamp(), '2022-09-04 23:06:05' )
   }
-);
+)
 test(
-  "adjust({ days: -400 })",
+  'adjust({ days: -400 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ days: -400 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ days: -400 })
     t.is( s.stamp(), '2021-08-04 07:06:05' )
   }
-);
+)
 test(
-  "adjust({ months: -20 })",
+  'adjust({ months: -20 })',
   t => {
-    const s = timestamp('2022-09-08 07:06:05').adjust({ months: -20 });
+    const s = timestamp('2022-09-08 07:06:05').adjust({ months: -20 })
     t.is( s.stamp(), '2021-01-08 07:06:05' )
   }
-);
+)
