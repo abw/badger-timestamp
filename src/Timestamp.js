@@ -28,12 +28,12 @@ const defaults = {
 export class Timestamp {
   /**
    * Constructor for Timestamp object.
-   * @param {String|Integer|Date|Object} [ts] - timestamp
+   * @param {string|number|Date|Object} [ts] - timestamp
    * @param {Object} [options] - configuration options
-   * @param {String} [options.joint=' '] - joining character between date and time parts
-   * @param {String} [options.dateJoint='-'] - joining character for date segments
-   * @param {String} [options.timeJoint=':'] - joining character for time segments
-   * @param {String} [options.locale='default'] - locale for formatting dates and times
+   * @param {string} [options.joint=' '] - joining character between date and time parts
+   * @param {string} [options.dateJoint='-'] - joining character for date segments
+   * @param {string} [options.timeJoint=':'] - joining character for time segments
+   * @param {string} [options.locale='default'] - locale for formatting dates and times
    */
   constructor(ts, options) {
     const props = { ...defaults, ...options }
@@ -99,8 +99,8 @@ export class Timestamp {
   //--------------------------------------------------------------------------
   /**
    * Method to get or set the year.
-   * @param {Integer} [year] - optional new value for year
-   * @return {Integer} - the year
+   * @param {number} [year] - optional new value for year
+   * @return {number} - the year
    */
   year(year) {
     if (hasValue(year)) {
@@ -111,8 +111,8 @@ export class Timestamp {
 
   /**
    * Method to get or set the month.
-   * @param {Integer} [month] - optional new value for month
-   * @return {Integer} - the month
+   * @param {number} [month] - optional new value for month
+   * @return {number} - the month
    */
   month(month) {
     if (hasValue(month)) {
@@ -124,8 +124,8 @@ export class Timestamp {
 
   /**
    * Method to get or set the day.
-   * @param {Integer} [day] - optional new value for day
-   * @return {Integer} - the day
+   * @param {number} [day] - optional new value for day
+   * @return {number} - the day
    */
   day(day) {
     if (hasValue(day)) {
@@ -137,8 +137,8 @@ export class Timestamp {
 
   /**
    * Method to get or set the hours.
-   * @param {Integer} [hours] - optional new value for hours
-   * @return {Integer} - the hours
+   * @param {number} [hours] - optional new value for hours
+   * @return {number} - the hours
    */
   hours(hours) {
     if (hasValue(hours)) {
@@ -150,8 +150,8 @@ export class Timestamp {
 
   /**
    * Method to get or set the minutes.
-   * @param {Integer} [minutes] - optional new value for minutes
-   * @return {Integer} - the minutes
+   * @param {number} [minutes] - optional new value for minutes
+   * @return {number} - the minutes
    */
   minutes(minutes) {
     if (hasValue(minutes)) {
@@ -163,8 +163,8 @@ export class Timestamp {
 
   /**
    * Method to get or set the seconds.
-   * @param {Integer} [seconds] - optional new value for seconds
-   * @return {Integer} - the seconds
+   * @param {number} [seconds] - optional new value for seconds
+   * @return {number} - the seconds
    */
   seconds(seconds) {
     if (hasValue(seconds)) {
@@ -186,14 +186,14 @@ export class Timestamp {
   }
   /**
    * Method to return the number of millseconds since the Unix epoch
-   * @return {Integer} - the number of milliseconds
+   * @return {number} - the number of milliseconds
    */
   epochMilliseconds() {
     return this.dateObject().getTime()
   }
   /**
    * Method to return the number of seconds since the Unix epoch
-   * @return {Integer} - the number of seconds
+   * @return {number} - the number of seconds
    */
   epochSeconds() {
     return Math.floor(this.epochMilliseconds() / 1000)
@@ -205,10 +205,10 @@ export class Timestamp {
   /**
    * Method to return a formatted timestamp string in the form `YYYY-MM-DD HH:MM:SS`.
    * @param {Object} [options] - configuration options
-   * @param {String} [options.joint=' '] - joining character between date and time parts
-   * @param {String} [options.dateJoint='-'] - joining character for date segments
-   * @param {String} [options.timeJoint=':'] - joining character for time segments
-   * @return {String} - formatted date/time stamp
+   * @param {string} [options.joint=' '] - joining character between date and time parts
+   * @param {string} [options.dateJoint='-'] - joining character for date segments
+   * @param {string} [options.timeJoint=':'] - joining character for time segments
+   * @return {string} - formatted date/time stamp
    */
   stamp(options={}) {
     return joinTimestamp(
@@ -220,10 +220,10 @@ export class Timestamp {
   /**
    * Auto-stringification method as a wrapper around {@link stamp()}.
    * @param {Object} [options] - configuration options
-   * @param {String} [options.joint=' '] - joining character between date and time parts
-   * @param {String} [options.dateJoint='-'] - joining character for date segments
-   * @param {String} [options.timeJoint=':'] - joining character for time segments
-   * @return {String} - formatted date/time stamp
+   * @param {string} [options.joint=' '] - joining character between date and time parts
+   * @param {string} [options.dateJoint='-'] - joining character for date segments
+   * @param {string} [options.timeJoint=':'] - joining character for time segments
+   * @return {string} - formatted date/time stamp
    */
   toString(options) {
     return this.stamp(options)
@@ -231,8 +231,8 @@ export class Timestamp {
 
   /**
    * Method to return a formatted date string in the form `YYYY-MM-DD`.
-   * @param {String} [joint='-'] - optional joining character
-   * @return {String} - formatted date string
+   * @param {string} [joint='-'] - optional joining character
+   * @return {string} - formatted date string
    */
   date(joint=this.props.dateJoint) {
     return joinDate(this.parts, joint)
@@ -240,8 +240,8 @@ export class Timestamp {
 
   /**
    * Method to return a formatted time string in the form `HH:MM:SS`.
-   * @param {String} [joint=':''] - optional joining character
-   * @return {String} - formatted time string
+   * @param {string} [joint=':''] - optional joining character
+   * @return {string} - formatted time string
    */
   time(joint=this.props.timeJoint) {
     return joinTime(this.parts, joint)
@@ -249,7 +249,7 @@ export class Timestamp {
 
   /**
    * Method to return the timestamp in kebab-case `YYYY-MM-DD-hh-mm-ss` regardless of any options.
-   * @return {String} - formatted date/time string
+   * @return {string} - formatted date/time string
    */
   kebab() {
     return joinTimestamp(
@@ -260,7 +260,7 @@ export class Timestamp {
 
   /**
    * Method to return the date and time in kebab-case `YYYYMMDD-hhmmss` regardless of any options.
-   * @return {String} - formatted date/time string
+   * @return {string} - formatted date/time string
    */
   kebabDateTime() {
     return joinTimestamp(
@@ -271,7 +271,7 @@ export class Timestamp {
 
   /**
    * Method to return the date in kebab-case `YYYY-MM-DD` regardless of any options.
-   * @return {String} - formatted date string
+   * @return {string} - formatted date string
    */
   kebabDate() {
     return joinDate(this.parts, '-')
@@ -279,7 +279,7 @@ export class Timestamp {
 
   /**
    * Method to return the time in kebab-case `hh-mm-ss` regardless of any options.
-   * @return {String} - formatted time string
+   * @return {string} - formatted time string
    */
   kebabTime() {
     return joinTime(this.parts, '-')
@@ -287,7 +287,7 @@ export class Timestamp {
 
   /**
    * Method to return the timestamp in snake-case `YYYY_MM_DD_hh_mm_ss` regardless of any options.
-   * @return {String} - formatted date/time string
+   * @return {string} - formatted date/time string
    */
   snake() {
     return joinTimestamp(
@@ -298,7 +298,7 @@ export class Timestamp {
 
   /**
    * Method to return the date and time in snake-case `YYYYMMDD_hhmmss` regardless of any options.
-   * @return {String} - formatted date/time string
+   * @return {string} - formatted date/time string
    */
   snakeDateTime() {
     return joinTimestamp(
@@ -309,7 +309,7 @@ export class Timestamp {
 
   /**
    * Method to return the date in snake-case `YYYY_MM_DD` regardless of any options.
-   * @return {String} - formatted date string
+   * @return {string} - formatted date string
    */
   snakeDate() {
     return joinDate(this.parts, '_')
@@ -317,7 +317,7 @@ export class Timestamp {
 
   /**
    * Method to return the time in snake-case `hh_mm_ss` regardless of any options.
-   * @return {String} - formatted time string
+   * @return {string} - formatted time string
    */
   snakeTime() {
     return joinTime(this.parts, '_')
@@ -325,7 +325,7 @@ export class Timestamp {
 
   /**
    * Method to return the timestamp squished together as `YYYYMMDDhhmmss` regardless of any options.
-   * @return {String} - formatted date/time string
+   * @return {string} - formatted date/time string
    */
   squish() {
     return joinTimestamp(
@@ -336,7 +336,7 @@ export class Timestamp {
 
   /**
    * Method to return the date squished together as `YYYYMMDD` regardless of any options.
-   * @return {String} - formatted date string
+   * @return {string} - formatted date string
    */
   squishDate() {
     return joinDate(this.parts, '')
@@ -344,7 +344,7 @@ export class Timestamp {
 
   /**
    * Method to return the time squished together as `hhmmss` regardless of any options.
-   * @return {String} - formatted time string
+   * @return {string} - formatted time string
    */
   squishTime() {
     return joinTime(this.parts, '')
@@ -352,8 +352,8 @@ export class Timestamp {
 
   /**
    * Method to return the month name.
-   * @param {String} [format='long'] - optional format: `full`, `long`, `medium`, `short`
-   * @return {String} - the month name
+   * @param {string} [format='long'] - optional format: `full`, `long`, `medium`, `short`
+   * @return {string} - the month name
    */
   monthName(format='long') {
     const mon = this.dateObject().toLocaleString(
@@ -371,7 +371,7 @@ export class Timestamp {
 
   /**
    * Method to return the weekday name as a number from 0 (Sunday) to 6 (Saturday)
-   * @return {Integer} - the weekday number
+   * @return {number} - the weekday number
    */
   weekday() {
     return this.dateObject().getDay()
@@ -379,8 +379,8 @@ export class Timestamp {
 
   /**
    * Method to return the weekday name.
-   * @param {String} [format='long'] - optional format: `full`, `long`, `medium`, `short`
-   * @return {String} - the weekday name
+   * @param {string} [format='long'] - optional format: `full`, `long`, `medium`, `short`
+   * @return {string} - the weekday name
    */
   weekdayName(format='long') {
     return this.dateObject().toLocaleString(
@@ -398,7 +398,7 @@ export class Timestamp {
    * `"2 years 2 months"`, etc. Or it can be specified as an object: `{ year: 1, month: 1 }`,
    * `{ years: 2, months: 2 }`, etc.  Any overflow or underflow will be corrected by the
    * {@link correct()} method.
-   * @param {String|Object} duration - a string or object of adjustments
+   * @param {string|Object} duration - a string or object of adjustments
    * @example
    * ts.adjust("1 year 2 months 3 hours")
    * @example
@@ -505,7 +505,7 @@ export class Timestamp {
    * `"2 years 2 months"`, etc. Or it can be specified as an object: `{ year: 1, month: 1 }`,
    * `{ years: 2, months: 2 }`, etc.
    * @param {Array} args - any argument(s) accepted by the constructor
-   * @return {Integer} - -1 if the timestamp is before the comparator, 0 if it's equal, +1 if it's after.
+   * @return {number} - -1 if the timestamp is before the comparator, 0 if it's equal, +1 if it's after.
    */
   compare(...args) {
     const that  = new Timestamp(...args)
@@ -532,7 +532,7 @@ export class Timestamp {
   /**
    * Method to compare one timestamp to another for equality
    * @param {Array} args - any argument(s) accepted by the constructor
-   * @return {Boolean} - true if the timestamp is equal to the operand
+   * @return {boolean} - true if the timestamp is equal to the operand
    */
   equal(...args) {
     return this.compare(...args) == 0
@@ -540,7 +540,7 @@ export class Timestamp {
   /**
    * Method to test for the timestamp coming before another timestamp
    * @param {Array} args - any argument(s) accepted by the constructor
-   * @return {Boolean} - true if the timestamp is before the operand
+   * @return {boolean} - true if the timestamp is before the operand
    */
   before(...args) {
     return this.compare(...args) == -1
@@ -548,7 +548,7 @@ export class Timestamp {
   /**
    * Method to test for the timestamp coming after another timestamp
    * @param {Array} args - any argument(s) accepted by the constructor
-   * @return {Boolean} - true if the timestamp is after the operand
+   * @return {boolean} - true if the timestamp is after the operand
    */
   after(...args) {
     return this.compare(...args) == 1
@@ -556,7 +556,7 @@ export class Timestamp {
   /**
    * Method to test for the timestamp being equal to or coming after another timestamp
    * @param {Array} args - any argument(s) accepted by the constructor
-   * @return {Boolean} - true if the timestamp is equal to or coming after the operand
+   * @return {boolean} - true if the timestamp is equal to or coming after the operand
    */
   notBefore(...args) {
     return this.compare(...args) >= 0
@@ -564,21 +564,21 @@ export class Timestamp {
   /**
    * Method to test for the timestamp being equal to or coming before another timestamp
    * @param {Array} args - any argument(s) accepted by the constructor
-   * @return {Boolean} - true if the timestamp is equal to or coming before the operand
+   * @return {boolean} - true if the timestamp is equal to or coming before the operand
    */
   notAfter(...args) {
     return this.compare(...args) <= 0
   }
   /**
    * Method to test for the timestamp being in the past.
-   * @return {Boolean} - true if the timestamp is before the current time
+   * @return {boolean} - true if the timestamp is before the current time
    */
   inThePast() {
     return this.before(now())
   }
   /**
    * Method to test for the timestamp being in the past.
-   * @return {Boolean} - true if the timestamp is before the current time
+   * @return {boolean} - true if the timestamp is before the current time
    */
   inTheFuture() {
     return this.after(now())
@@ -590,15 +590,15 @@ export class Timestamp {
 //--------------------------------------------------------------------------
 /**
  * Function to determine is a string is a valid timestamp.
- * @param {String} ts - timestamp string
- * @return {Boolean} - value indicating if the string is a timestamp
+ * @param {string} ts - timestamp string
+ * @return {boolean} - value indicating if the string is a timestamp
  */
 export const isTimestamp = ts =>
   isString(ts) && ts.match(STAMP_REGEX)
 
 /**
  * Function to split a timestamp into its constituent parts
- * @param {String} ts - timestamp string
+ * @param {string} ts - timestamp string
  * @return {Object} - object containing `year`, `month`, `day`, `hours`, `minutes` and `seconds`.
  */
 export const splitTimestamp = ts => {
@@ -618,7 +618,7 @@ export const splitTimestamp = ts => {
 /**
  * Function to determine is a valid is a `Date` object
  * @param {Date} date - date object or other value
- * @return {Boolean} - value indicating if the `date` is a `Date` object
+ * @return {boolean} - value indicating if the `date` is a `Date` object
  */
 export const isDate = date =>
   date instanceof Date
@@ -703,17 +703,17 @@ export const weeksToDays = duration => {
 /**
  * Function to join the constituent parts of a time stamp into a string
  * @param {Object} ts - object containing `year`, `month`, `day`, and optionally, `hours`, `minutes` and `seconds`.
- * @param {String} ts.year - the year as an integer
- * @param {String} ts.month - the month as an integer from 1 to 12
- * @param {String} ts.day - the month as an integer
- * @param {String} ts.[hours] - the hours as an integer from 0 to 23
- * @param {String} ts.[minutes] - the minutes as an integer from 0 to 59
- * @param {String} ts.[seconds] - the seconds as an integer from 0 to 59
- * @param {String} [config] - optional configuration options
- * @param {String} [config.joint=' '] - joining character between date and time parts
- * @param {String} [config.dateJoint='-'] - joining character for date segments
- * @param {String} [config.timeJoint=':'] - joining character for time segments
- * @return {String} - timestamp string of the form `YYYY-MM-DD` or `YYYY-MM-DD HH:MM:SS`
+ * @param {string} ts.year - the year as an integer
+ * @param {string} ts.month - the month as an integer from 1 to 12
+ * @param {string} ts.day - the month as an integer
+ * @param {string} [ts.hours] - the hours as an integer from 0 to 23
+ * @param {string} [ts.minutes] - the minutes as an integer from 0 to 59
+ * @param {string} [ts.seconds] - the seconds as an integer from 0 to 59
+ * @param {Object} [config] - optional configuration options
+ * @param {string} [config.joint=' '] - joining character between date and time parts
+ * @param {string} [config.dateJoint='-'] - joining character for date segments
+ * @param {string} [config.timeJoint=':'] - joining character for time segments
+ * @return {string} - timestamp string of the form `YYYY-MM-DD` or `YYYY-MM-DD HH:MM:SS`
  */
 export const joinTimestamp = (ts, config={}) => {
   const date = joinDate(ts, config.dateJoint)
@@ -730,11 +730,11 @@ export const joinTimestamp = (ts, config={}) => {
 /**
  * Function to join the constituent parts of a date
  * @param {Object} ts - object containing `year`, `month`, `day`
- * @param {String} ts.year - the year as an integer
- * @param {String} ts.month - the month as an integer from 1 to 12
- * @param {String} ts.day - the month as an integer
- * @param {String} [joint='-'] - optional joining character for date segments
- * @return {String} - date string of the form `YYYY-MM-DD`
+ * @param {string} ts.year - the year as an integer
+ * @param {string} ts.month - the month as an integer from 1 to 12
+ * @param {string} ts.day - the month as an integer
+ * @param {string} [joint='-'] - optional joining character for date segments
+ * @return {string} - date string of the form `YYYY-MM-DD`
  */
 export const joinDate = (ts, joint=defaults.dateJoint) =>
   [
@@ -746,11 +746,11 @@ export const joinDate = (ts, joint=defaults.dateJoint) =>
 /**
  * Function to join the constituent parts of a time into a string
  * @param {Object} ts - object containing `hours`, `minutes` and `seconds`.
- * @param {String} ts.hours - the hours as an integer from 0 to 23
- * @param {String} ts.minutes - the minutes as an integer from 0 to 59
- * @param {String} ts.seconds - the seconds as an integer from 0 to 59
- * @param {String} [joint=':'] - optional joining character for time segments
- * @return {String} - time string of the form `HH:MM:SS`
+ * @param {string} ts.hours - the hours as an integer from 0 to 23
+ * @param {string} ts.minutes - the minutes as an integer from 0 to 59
+ * @param {string} ts.seconds - the seconds as an integer from 0 to 59
+ * @param {string} [joint=':'] - optional joining character for time segments
+ * @return {string} - time string of the form `HH:MM:SS`
  */
 export const joinTime = (ts, joint=defaults.timeJoint) =>
   [
@@ -762,9 +762,9 @@ export const joinTime = (ts, joint=defaults.timeJoint) =>
 
 /**
  * Function to return the number of days in a month.
- * @param {Integer} month - the month as an integer from 1 to 12
- * @param {Intger} year - the year as an integer, e.g. 2022
- * @return {Integer} - the number of days in the month: 28, 29, 30 or 31
+ * @param {number} month - the month as an integer from 1 to 12
+ * @param {number} year - the year as an integer, e.g. 2022
+ * @return {number} - the number of days in the month: 28, 29, 30 or 31
  */
 export const daysInMonth = (month, year) => {
   if (month === 4 || month === 6 || month === 9 || month === 11) {
@@ -780,8 +780,8 @@ export const daysInMonth = (month, year) => {
 
 /**
  * Function to determine if a year is a leap year
- * @param {Intger} year - the year as an integer, e.g. 2022
- * @return {Boolean} - true if the year is a leap year or false otherwise
+ * @param {number} year - the year as an integer, e.g. 2022
+ * @return {boolean} - true if the year is a leap year or false otherwise
  */
 export const leapYear = year => {
   if (year % 4) {
@@ -801,11 +801,11 @@ export const leapYear = year => {
 
 /**
  * Function to create a new `Timestamp` object
- * @param {String|Integer|Date|Object} [ts] - timestamp
+ * @param {string|number|Date|Object} [ts] - timestamp
  * @param {Object} [options] - configuration options
- * @param {String} [options.joint=' '] - joining character between date and time parts
- * @param {String} [options.dateJoint='-'] - joining character for date segments
- * @param {String} [options.timeJoint=':'] - joining character for time segments
+ * @param {string} [options.joint=' '] - joining character between date and time parts
+ * @param {string} [options.dateJoint='-'] - joining character for date segments
+ * @param {string} [options.timeJoint=':'] - joining character for time segments
  * @return {Object} - a `Timestamp` object
  */
 export const timestamp = (ts, options) => new Timestamp(ts, options)
@@ -813,9 +813,9 @@ export const timestamp = (ts, options) => new Timestamp(ts, options)
 /**
  * Function to create a new `Timestamp` object for the current date/time
  * @param {Object} [options] - configuration options
- * @param {String} [options.joint=' '] - joining character between date and time parts
- * @param {String} [options.dateJoint='-'] - joining character for date segments
- * @param {String} [options.timeJoint=':'] - joining character for time segments
+ * @param {string} [options.joint=' '] - joining character between date and time parts
+ * @param {string} [options.dateJoint='-'] - joining character for date segments
+ * @param {string} [options.timeJoint=':'] - joining character for time segments
  * @return {Object} - a `Timestamp` object
  */
 export const now = (options) => new Timestamp(null, options)

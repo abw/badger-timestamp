@@ -9,7 +9,10 @@
   "exports": {
     ".": {
       "require": "./dist/badger-timestamp.cjs",
-      "import": "./dist/badger-timestamp.mjs"
+      "import": {
+        "default": "./dist/badger-timestamp.mjs",
+        "types": "./dist/index.d.ts"
+      }
     }
   },
   "author": "Andy Wardley",
@@ -29,10 +32,10 @@
     "rdev": "rollup -c -w",
     "dev": "vitepress dev website",
     "preview": "vitepress preview website",
-    "XXbuild": "$npm_execpath build:lib && $npm_execpath build:types && $npm_execpath build:docs",
-    "build": "$npm_execpath build:lib && $npm_execpath build:docs",
+    "build": "$npm_execpath build:lib && $npm_execpath build:types && $npm_execpath build:docs",
     "build:clean": "rimraf dist",
     "build:rollup": "rollup -c",
+    "build:types": "tsc",
     "build:lib": "$npm_execpath build:clean && $npm_execpath build:rollup",
     "build:docs": "vitepress build website",
     "lint": "eslint 'src/**/*' 'test/**/*'",
@@ -54,10 +57,11 @@
     "eslint": "^8.20.0",
     "rimraf": "^6.0.1",
     "rollup": "^3.18.0",
+    "typescript": "^5.6.2",
     "vitepress": "1.0.0-rc.44",
     "vitest": "^2.0.5"
   },
   "dependencies": {
-    "@abw/badger-utils": "^1.1.1"
+    "@abw/badger-utils": "^1.1.3"
   }
 }
