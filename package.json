@@ -35,7 +35,7 @@
     "build": "$npm_execpath build:lib && $npm_execpath build:types && $npm_execpath build:docs",
     "build:clean": "rimraf dist",
     "build:rollup": "rollup -c",
-    "build:types": "tsc",
+    "build:types": "tsc && bin/fix-declare-module.js",
     "build:lib": "$npm_execpath build:clean && $npm_execpath build:rollup",
     "build:docs": "vitepress build website",
     "lint": "eslint 'src/**/*' 'test/**/*'",
