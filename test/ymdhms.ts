@@ -1,5 +1,5 @@
 import test from './library/ava-vitest.js'
-import { timestamp } from '../src/Timestamp.js'
+import { timestamp } from '../src/Timestamp'
 
 test(
   'year() method',

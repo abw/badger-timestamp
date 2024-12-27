@@ -1,5 +1,5 @@
 import test from './library/ava-vitest.js'
-import { now } from '../src/Timestamp.js'
+import { now } from '../src/Timestamp'
 
 test(
   'now()',

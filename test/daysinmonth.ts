@@ -1,5 +1,5 @@
 import test from './library/ava-vitest.js'
-import { daysInMonth } from '../src/Timestamp.js'
+import { daysInMonth } from '../src/Timestamp'
 
 test(
   '31 days in January',

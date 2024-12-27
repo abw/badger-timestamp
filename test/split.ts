@@ -1,5 +1,5 @@
 import test from './library/ava-vitest.js'
-import { splitTimestamp } from '../src/Timestamp.js'
+import { splitTimestamp } from '../src/Timestamp'
 
 //-----------------------------------------------------------------------------
 // date

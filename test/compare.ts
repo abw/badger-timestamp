@@ -1,5 +1,5 @@
 import test from './library/ava-vitest.js'
-import { now, timestamp } from '../src/Timestamp.js'
+import { now, timestamp } from '../src/Timestamp'
 
 test(
   'compare years',

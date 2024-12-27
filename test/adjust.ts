@@ -1,6 +1,6 @@
 // import { test, expect } from 'vitest'
 import test from './library/ava-vitest.js'
-import { timestamp } from '../src/Timestamp.js'
+import { timestamp } from '../src/Timestamp'
 
 //-----------------------------------------------------------------------------
 // year(s)

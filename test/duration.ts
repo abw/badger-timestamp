@@ -1,5 +1,5 @@
 import test from './library/ava-vitest.js'
-import { parseDuration, singularDurations } from '../src/Timestamp.js'
+import { parseDuration, singularDurations } from '../src/Timestamp'
 
 test(
   'parseDuration("1 year")',

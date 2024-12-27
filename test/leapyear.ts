@@ -1,5 +1,5 @@
 import test from './library/ava-vitest.js'
-import { leapYear } from '../src/Timestamp.js'
+import { leapYear } from '../src/Timestamp'
 
 test(
   '2021 is not a leap year',

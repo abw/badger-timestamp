@@ -1,5 +1,5 @@
 import test from './library/ava-vitest.js'
-import { parseDate, unpackDate } from '../src/Timestamp.js'
+import { parseDate, unpackDate } from '../src/Timestamp'
 
 //-----------------------------------------------------------------------------
 // Date object

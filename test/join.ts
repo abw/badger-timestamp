@@ -1,5 +1,5 @@
 import test from './library/ava-vitest.js'
-import { joinDate, joinTime, joinTimestamp, timestamp } from '../src/Timestamp.js'
+import { joinDate, joinTime, joinTimestamp, timestamp } from '../src/Timestamp'
 
 //-----------------------------------------------------------------------------
 // date
