@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@abw/badger-utils':
-    specifier: 1.2.0-ts-beta3
-    version: 1.2.0-ts-beta3
+    specifier: 1.2.0
+    version: 1.2.0
 
 devDependencies:
   '@eslint/eslintrc':
@@ -64,8 +64,8 @@ devDependencies:
 
 packages:
 
-  /@abw/badger-utils@1.2.0-ts-beta3:
-    resolution: {integrity: sha512-95MR2gTXF2YDIRLVmN4646sbrET4kKDVS0X7QGuCtKSpWUL2OiY8qM1hLp/yoZoUoGszfX78RANkJt2mf6blVw==}
+  /@abw/badger-utils@1.2.0:
+    resolution: {integrity: sha512-7JZOL5m4HoT3MvAy09A+JlwfDi4eXqngUau8syfr4Wt897ylD5vGTavJQH+tNKdMe1Dc33Y6MjSngGyYQ7eqEQ==}
     dev: false
 
   /@algolia/autocomplete-core@1.17.7(@algolia/client-search@5.18.0)(algoliasearch@5.18.0)(search-insights@2.17.3):
