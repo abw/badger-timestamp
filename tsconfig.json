@@ -1,6 +1,8 @@
 {
   "include": ["src/**/*"],
   "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
