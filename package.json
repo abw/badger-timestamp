@@ -1,6 +1,6 @@
 {
   "name": "@abw/badger-timestamp",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Simple timestamp utility",
   "type": "module",
   "main": "dist/badger-timestamp.umd.cjs",
