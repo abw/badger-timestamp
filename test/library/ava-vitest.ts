@@ -1,8 +1,16 @@
 import { test, expect } from 'vitest'
 
+type TestWrapper = {
+  is: (input: unknown, expected: unknown) => void,
+  true: (input: unknown) => void,
+  false: (input: unknown) => void,
+  deepEqual: (input: unknown, expected: unknown) => void,
+  throws: (input: () => void, expected?: { message?: string }) => void,
+}
+
 // Adapter for running test written for Ava using Vitest.
 // NOTE: this only supports the subset of Ava functions that I'm using.
-const t = {
+const t: TestWrapper = {
   is: (input, expected) =>
     expect(input).toBe(expected),
   deepEqual: (input, expected) =>
@@ -11,20 +19,23 @@ const t = {
     expect(input).toBe(true),
   false: input =>
     expect(input).toBe(false),
-  throws: (fn, expected={}) => {
+  throws: (fn: () => void, expected={}) => {
     try {
       fn()
     }
     catch (e) {
       if (expected.message) {
-        expect(e.message).toBe(expected.message)
+        expect((e as Error).message).toBe(expected.message)
       }
       return e
     }
   }
 }
 
-const AvaVitest = (name, fn) =>
+const AvaVitest = (
+  name: string,
+  fn: (t: TestWrapper) => void
+) =>
   test(name, () => fn(t))
 
 export default AvaVitest
