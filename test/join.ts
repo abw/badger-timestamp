@@ -1,5 +1,6 @@
 import test from './library/ava-vitest.js'
 import { joinDate, joinTime, joinTimestamp, timestamp } from '../src/Timestamp'
+import { TimestampParts } from '../src/types.js'
 
 //-----------------------------------------------------------------------------
 // date
@@ -25,15 +26,22 @@ test(
 test(
   'join a time with default joint',
   t => {
-    const time = joinTime({ hours: 1, minutes: 2, seconds: 3 })
+    const time = joinTime({ hours: 1, minutes: 2, seconds: 3 } as TimestampParts)
     t.is( time, '01:02:03' )
   }
 )
 test(
   'join a time with custom joint',
   t => {
-    const time = joinTime({ hours: 1, minutes: 2, seconds: 3 }, ' ')
+    const time = joinTime({ hours: 1, minutes: 2, seconds: 3 } as TimestampParts, ' ')
     t.is( time, '01 02 03' )
+  }
+)
+test(
+  'join a time with undefined hours - should return undefined',
+  t => {
+    const time = joinTime({ minutes: 2, seconds: 3 } as TimestampParts)
+    t.is( time, undefined )
   }
 )
 

@@ -739,12 +739,18 @@ export const weeksToDays = (duration: DurationPlurals): DurationPlurals => {
  * @param {string} [config.timeJoint=':'] - joining character for time segments
  * @return {string} - timestamp string of the form `YYYY-MM-DD` or `YYYY-MM-DD HH:MM:SS`
  */
-export const joinTimestamp = (ts: TimestampParts, config:TimestampOptions ={}): string => {
+export const joinTimestamp = (
+  ts: TimestampParts,
+  config:TimestampOptions = {}
+): string => {
   const date = joinDate(ts, config.dateJoint)
 
   if (hasValue(ts.hours)) {
     const time = joinTime(ts, config.timeJoint)
-    return [date, time].join(hasValue(config.joint) ? config.joint : defaults.joint)
+    return [date, time].join(
+      hasValue(config.joint)
+        ? config.joint
+        : defaults.joint)
   }
   else {
     return date
@@ -760,7 +766,10 @@ export const joinTimestamp = (ts: TimestampParts, config:TimestampOptions ={}): 
  * @param {string} [joint='-'] - optional joining character for date segments
  * @return {string} - date string of the form `YYYY-MM-DD`
  */
-export const joinDate = (ts: TimestampParts, joint=defaults.dateJoint): string =>
+export const joinDate = (
+  ts: TimestampParts,
+  joint=defaults.dateJoint
+): string =>
   [
     String(ts.year).padStart(4, '0'),
     String(ts.month).padStart(2, '0'),
@@ -776,12 +785,17 @@ export const joinDate = (ts: TimestampParts, joint=defaults.dateJoint): string =
  * @param {string} [joint=':'] - optional joining character for time segments
  * @return {string} - time string of the form `HH:MM:SS`
  */
-export const joinTime = (ts: TimestampParts, joint: string=defaults.timeJoint): string =>
-  [
-    String(ts.hours).padStart(2, '0'),
-    String(ts.minutes).padStart(2, '0'),
-    String(ts.seconds).padStart(2, '0'),
-  ].join(joint)
+export const joinTime = (
+  ts: TimestampParts,
+  joint: string = defaults.timeJoint
+): string | undefined =>
+  hasValue(ts.hours)
+    ? [
+      String(ts.hours).padStart(2, '0'),
+      String(ts.minutes).padStart(2, '0'),
+      String(ts.seconds).padStart(2, '0'),
+    ].join(joint)
+    : undefined
 
 
 /**
